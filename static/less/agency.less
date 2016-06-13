@@ -8,17 +8,6 @@ body {
 	.body-font;
 }
 
-/*
-nav>li>a.btn-menu-booknow{
-	background-color: @brand-primary;
-	border: 0px solid @brand-primary;
-}
-a.btn-menu-booknow:hover{
-	background-color: darken(@brand-primary, 10%);
-	border-color: darken(@brand-primary, 12%);
-}
-*/
-
 .text-muted {
 	color: @gray;
 }
@@ -123,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 	}
 	.nav>li>a.btn-menu-booknow{
 		@media(min-width: 768px){
-			margin-left: 0px;
+			margin-left: 15px;
 			margin-right: 0px;
 		}
 		margin-left: 5px;
@@ -131,6 +120,9 @@ h1, h2, h3, h4, h5, h6 {
 		color: white;
 		background-color: @brand-primary;
 		border: 0px;
+		&:focus{
+			color: white;
+		}
 		&:hover{
 			color: white;
 			background-color: darken(@brand-primary, 10%);

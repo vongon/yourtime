@@ -19,7 +19,13 @@ var NavBar = React.createClass({
 
         var scrollPos = $(document).scrollTop();
 
-        if( scrollPos < servicesPos) $("a[href$='#page-top']").focus();
+        if( scrollPos < servicesPos){
+            $("a[href$='#services']").blur();
+            $("a[href$='#howitworks']").blur();
+            $("a[href$='#faq']").blur();
+            $("a[href$='#about']").blur();
+            $("a[href$='#contact']").blur();
+        }
         else if( scrollPos >= servicesPos && scrollPos < howitworksPos) $("a[href$='#services']").focus();
         else if( scrollPos >= howitworksPos && scrollPos < faqPos) $("a[href$='#howitworks']").focus();
         else if( scrollPos >= faqPos && scrollPos < aboutPos) $("a[href$='#faq']").focus();
@@ -39,7 +45,7 @@ var NavBar = React.createClass({
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand page-scroll" href="#page-top">YourTime</a>
+                        <a className="navbar-brand page-scroll" href="#">YourTime</a>
                     </div>
 
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

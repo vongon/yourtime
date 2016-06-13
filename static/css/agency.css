@@ -2,16 +2,6 @@ body {
   overflow-x: hidden;
   font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-/*
-nav>li>a.btn-menu-booknow{
-	background-color: @brand-primary;
-	border: 0px solid @brand-primary;
-}
-a.btn-menu-booknow:hover{
-	background-color: darken(@brand-primary, 10%);
-	border-color: darken(@brand-primary, 12%);
-}
-*/
 .text-muted {
   color: #777;
 }
@@ -191,9 +181,12 @@ fieldset[disabled] .btn-xl.active {
 }
 @media (min-width: 768px) {
   .navbar-default .nav > li > a.btn-menu-booknow {
-    margin-left: 0px;
+    margin-left: 15px;
     margin-right: 0px;
   }
+}
+.navbar-default .nav > li > a.btn-menu-booknow:focus {
+  color: white;
 }
 .navbar-default .nav > li > a.btn-menu-booknow:hover {
   color: white;
