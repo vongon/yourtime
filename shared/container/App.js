@@ -1,16 +1,14 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
-import { incrementCounter } from '../redux/actions/actions';
-
 
 var App = React.createClass({
-  render: function(){
-    console.log('render App');
-    return (<div>
-              <Helmet
-                title="MERN Starter - Blog App"
-                titleTemplate="%s - Blog App"
+    render: function () {
+        console.log('render App');
+        return (
+        <div id="page-top" className="index">
+            <Helmet
+                title="YourTime"
                 meta={[
                     { charset: 'utf-8' },
                     {
@@ -22,29 +20,21 @@ var App = React.createClass({
                       content: 'width=device-width, initial-scale=1',
                     },
                   ]}
-              />
+                link={[
+                {"href":"/css/bootstrap.min.css","rel":"stylesheet"},
+                {"href":"/css/agency.css","rel":"stylesheet"},
+                {"href":"/font-awesome/css/font-awesome.min.css","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Montserrat:400,700","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Kaushan+Script","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
+                ]}
+            />
+            { this.props.children }
+        </div>
+        );
 
-              <h1>hello world from app!</h1>
-              <button id={0} onClick={this.props.clicked}>increment counter 0</button>
-              <button id={1} onClick={this.props.clicked}>increment counter 1</button>
-              {this.props.counters.map(
-                function(counter){
-                  return <p key={counter.id}>{JSON.stringify(counter)}</p>
-                })}
-            </div>);
-  }
+    }
 });
 
-function mapStateToProps(store) {
-  return {
-    counters: store.counters,
-  };
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    clicked:(e) => { dispatch(incrementCounter(Number(e.target.id))) }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect()(App);
