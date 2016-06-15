@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 var HowItWorksSection = React.createClass({
     render: function(){
@@ -63,11 +64,13 @@ var HowItWorksSection = React.createClass({
                                 </div>
                             </li>
                             <li className="timeline-inverted">
-                                <div className="timeline-image">
-                                    <h4>Book A
-                                    <br />Service
-                                    <br />Now!</h4>
-                                </div>
+                                <Link to={this.props.appPath} alt="book a service now">
+                                    <div className="timeline-image">
+                                        <h4>Book A
+                                        <br />Service
+                                        <br />Now!</h4>
+                                    </div>
+                                </Link>
                             </li>
                         </ul>
                     </div>

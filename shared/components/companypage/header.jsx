@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 var Header = React.createClass({
     render: function(){
@@ -8,7 +9,7 @@ var Header = React.createClass({
                     <div className="intro-text">
                         <div className="intro-lead-in">Welcome to YourTime!</div>
                         <div className="intro-heading">It's nice to meet you</div>
-                        <a href="#" className="page-scroll btn btn-xl">Book A Service Now</a>
+                        <Link to={this.props.appPath} className="btn btn-xl">Book A Service Now</Link>
                     </div>
                 </div>
             </header>

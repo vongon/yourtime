@@ -382,6 +382,11 @@ section h3.section-subheading {
   margin-top: 12px;
   line-height: 14px;
 }
+.timeline > li .timeline-image:hover,
+.timeline > li .timeline-image:focus,
+.timeline > li .timeline-image:active {
+  background-color: #00accc;
+}
 .timeline > li.timeline-inverted > .timeline-panel {
   float: right;
   text-align: left;

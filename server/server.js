@@ -80,14 +80,8 @@ const renderFullPage = (html, initialState) => {
         <!-- Plugin JavaScript -->
         <script src="/js/jquery.easing.min.js"></script>
         <script src="/js/classie.js"></script>
-        <script src="/js/cbpAnimatedHeader.js"></script>
-    
-        <!-- Contact Form JavaScript -->
-        <!--<script src="/js/jqBootstrapValidation.js"></script>-->
-        <!--<script src="/js/contact_me.js"></script>-->
     
         <!-- Custom Theme JavaScript -->
-        <script src="/js/agency.js"></script>
 		<script src="/dist/bundle.js"></script>
 
 	  </body>

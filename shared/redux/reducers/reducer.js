@@ -1,8 +1,10 @@
 import * as ActionTypes from '../constants/constants';
 import _ from 'lodash';
+import { routerReducer } from 'react-router-redux';
+import { combineReducers } from 'redux';
 const initialState = {counters: []};
 
-const postReducer = (state = initialState, action) => {
+const myCounterReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'ADD_COUNTER':
             var newCounter = {
@@ -52,5 +54,8 @@ const postReducer = (state = initialState, action) => {
     }
 };
 
-export default postReducer;
+export default combineReducers({
+    counter: myCounterReducer,
+    routing: routerReducer
+});
 

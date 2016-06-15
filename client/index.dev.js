@@ -6,15 +6,16 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import {configureStore} from '../shared/redux/store/configureStore';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 const store = configureStore(window.__INITIAL_STATE__);
-const history = browserHistory;
-const dest = document.getElementById('root');
+const history = syncHistoryWithStore(browserHistory, store);
+const root = document.getElementById('root');
 
 let toRender;
 
 
-if (process.env.CLIENT && !window.devToolsExtension && false /*Making false for SAFARI*/) {
+if (process.env.CLIENT && !window.devToolsExtension) {
     toRender = (<Provider store={store}>
                     <div>
                         <Router history={history} routes={routes}/>
@@ -27,4 +28,4 @@ if (process.env.CLIENT && !window.devToolsExtension && false /*Making false for 
                 </Provider>);
 }
 
-render(toRender, dest);
+render(toRender, root);
