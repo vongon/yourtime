@@ -1,0 +1,19 @@
+body {
+  background-color: #f8f8f8;
+}
+.dashboard-title {
+  margin-bottom: 20px;
+}
+.panel {
+  margin-bottom: 20px;
+}
+.panel .icon {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 10px;
+  z-index: 100;
+  background-color: #ddd;
+}
+.navbar-default {
+  background-color: #ffffff;
+}

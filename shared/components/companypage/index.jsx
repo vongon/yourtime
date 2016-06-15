@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import NavBar from './navbar';
 import Header from './header';
 import ServicesSection from './sections/services';
@@ -70,6 +71,29 @@ var Index = React.createClass({
         var appPath = "/app";
         return (
             <div id="page-top">
+                <Helmet
+                    title="YourTime"
+                    meta={[
+                    { charset: 'utf-8' },
+                    {
+                      'http-equiv': 'X-UA-Compatible',
+                      content: 'IE=edge',
+                    },
+                    {
+                      name: 'viewport',
+                      content: 'width=device-width, initial-scale=1',
+                    },
+                  ]}
+                    link={[
+                {"href":"/css/bootstrap.min.css","rel":"stylesheet"},
+                {"href":"/css/companypage.css","rel":"stylesheet"},
+                {"href":"/font-awesome/css/font-awesome.min.css","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Montserrat:400,700","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Kaushan+Script","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic","rel":"stylesheet","type":"text/css"},
+                {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
+                ]}
+                />
                 <NavBar appPath = {appPath}/>
                 <Header appPath = {appPath}/>
                 <ServicesSection />

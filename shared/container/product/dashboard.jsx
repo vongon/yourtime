@@ -1,14 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import AutoPanel from '../../components/product/dashboard/autopanel';
+import NewPanel from '../../components/product/dashboard/newpanel';
+import LoadPanel from '../../components/product/dashboard/loadpanel'
+
+
 
 
 var Dashboard = React.createClass({
     render: function () {
         return (
             <div>
-                <h1 style={{marginTop: 100}}>Dashboard!</h1>
-                {this.props.children}
+                <h2 className="dashboard-title">My Services</h2>
+                <NewPanel />
+                <AutoPanel />
+                <hr />
+                <LoadPanel />
             </div>
         );
     }

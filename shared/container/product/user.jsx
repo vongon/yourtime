@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 var User = React.createClass({
     render: function () {
         return (
-            <h1 style={{marginTop: 100}}>User!</h1>
+            <div>
+                <h1 style={{marginTop: 100}}>User!</h1>
+            </div>
         );
     }
 });
