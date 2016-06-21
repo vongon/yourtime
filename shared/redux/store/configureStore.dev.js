@@ -30,6 +30,5 @@ export function configureStore(initialState = {}) {
             store.replaceReducer(nextReducer);
         });
     }
-
     return store;
 }

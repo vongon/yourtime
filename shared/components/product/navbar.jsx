@@ -3,6 +3,10 @@ import $ from 'jquery';
 import { Link } from 'react-router';
 
 var NavBar = React.createClass({
+    onLogOut: function(){
+        this.closeMobileMenu();
+        this.props.logOut();
+    },
     closeMobileMenu: function(e){
         $('.navbar-toggle:visible').click();
     },
@@ -33,7 +37,7 @@ var NavBar = React.createClass({
                                 </a>
                                 <ul className="dropdown-menu">
                                     <li><Link onClick={this.closeMobileMenu} to="/app/user">Account Settings</Link></li>
-                                    <li><a onClick={this.closeMobileMenu} href="#">Sign Out</a></li>
+                                    <li><a onClick={this.onLogOut} href="#">Log Out</a></li>
                                 </ul>
                             </li>
                             <li><a onClick={this.closeMobileMenu} href="#">Contact Us</a></li>

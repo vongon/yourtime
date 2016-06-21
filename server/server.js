@@ -2,6 +2,7 @@ import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import jwt from 'express-jwt';
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -11,6 +12,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 // Initialize the Express App
 const app = new Express();
+
 
 if (process.env.NODE_ENV !== 'production') {
     const compiler = webpack(config);
@@ -28,6 +30,7 @@ import Helmet from 'react-helmet';
 
 // Import required modules
 import routes from '../shared/routes';
+import user_routes from './routes/user.routes';
 import {fetchComponentData} from './util/fetchData';
 import serverConfig from './config';
 
@@ -39,11 +42,18 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
     }
 });
 
+// initialize JWT authentication
+var jwtCheck = jwt({
+    secret: new Buffer(process.env.AUTH0_SECRET, 'base64'),
+    audience: process.env.AUTH0_CLIENT
+});
+
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({limit: '20mb'}));
 app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-//app.use('/api', posts);
+app.use('/api', jwtCheck);
+app.use('/api/user', user_routes);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -80,7 +90,10 @@ const renderFullPage = (html, initialState) => {
         <!-- Plugin JavaScript -->
         <script src="/js/jquery.easing.min.js"></script>
         <script src="/js/classie.js"></script>
-    
+        
+        <!-- Auth0 Lock -->
+        <!--<script src="//cdn.auth0.com/js/lock-9.1.min.js"></script>-->
+        
         <!-- Custom Theme JavaScript -->
 		<script src="/dist/bundle.js"></script>
 
@@ -111,7 +124,12 @@ app.use((req, res, next) => {
             return next();
         }
 
-        const initialState = {};
+        const initialState = {
+            auth: {
+                auth0_domain: process.env.AUTH0_DOMAIN,
+                auth0_client: process.env.AUTH0_CLIENT
+            }
+        };
 
         const store = configureStore(initialState);
 

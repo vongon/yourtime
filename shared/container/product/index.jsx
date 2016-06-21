@@ -3,15 +3,32 @@ import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import appNavBar from '../../components/product/navbar';
 import formNavBar from '../../components/product/serviceform/navbar';
+import { authLogOut } from '../../redux/actions/auth.actions';
+import { browserHistory } from 'react-router';
+
 
 var Index = React.createClass({
+    showLogin: function(){
+        this.props.lock.show({
+            responseType: 'token',
+            authParams: {
+                scope: 'openid nickname email'
+            }
+        });
+    },
     render: function(){
         var NavBar;
-        if(this.props.nextRoute === "book"){
-            NavBar = formNavBar;
-        } else {
-            NavBar = appNavBar;
+        switch(this.props.nextRoute){
+            case "book":
+            case "loading":
+            case "login":
+                NavBar = formNavBar;
+                break;
+            default:
+                NavBar = appNavBar;
         }
+
+
         return (
             <div className="container">
                 <Helmet
@@ -24,7 +41,7 @@ var Index = React.createClass({
                     },
                     {
                       name: 'viewport',
-                      content: 'width=device-width, initial-scale=1',
+                      content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
                     },
                   ]}
                     link={[
@@ -37,7 +54,7 @@ var Index = React.createClass({
                 {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
                 ]}
                 />
-                <NavBar />
+                <NavBar logOut={this.props.logOut}/>
                 {this.props.children}
             </div>
         );
@@ -45,8 +62,23 @@ var Index = React.createClass({
 });
 
 function mapStateToProps(state, ownProps){
-    return {nextRoute: ownProps.routes[2].path};
+    return {
+        lock: state.auth.lock,
+        isLoading: state.auth.isLoading,
+        nextRoute: ownProps.routes[2].path,
+        user: state.auth.user,
+        tokenId: state.auth.tokenId
+    };
 }
 
-export default connect(mapStateToProps)(Index);
+function mapDispatchToProps(dispatch){
+    return {
+        logOut: ()=>{
+            dispatch(authLogOut());
+            browserHistory.push('/app/login');
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
 

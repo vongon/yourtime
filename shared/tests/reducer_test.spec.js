@@ -1,7 +1,7 @@
 import expect from 'expect';
 import postReducer from '../redux/reducers/reducer';
 import deepFreeze from 'deep-freeze';
-import {addCounter, removeCounter, incrementCounter, decrementCounter} from '../redux/actions/actions';
+import {addCounter, removeCounter, incrementCounter, decrementCounter} from '../redux/actions/auth.actions';
 import * as ActionTypes from '../redux/constants/constants';
 
 describe('reducer tests', () => {
