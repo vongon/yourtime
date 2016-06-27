@@ -8,7 +8,7 @@ import { formSetStep } from '../../../redux/actions/serviceform.actions';
 var LoginPrompt = React.createClass({
     showLogin: function(){
         this.props.lock.show({
-            callbackURL: 'http://localhost:3000/app/book',
+            callbackURL: this.props.site_domain+'/app/book',
             responseType: 'token',
             authParams: {
                 scope: 'openid nickname email',
@@ -49,7 +49,8 @@ LoginPrompt.propTypes = {
 function mapStateToProps(state, ownProps){
     return {
         lock: state.auth.lock,
-        serviceformSnapshot: state.serviceform
+        serviceformSnapshot: state.serviceform,
+        site_domain: state.auth.site_domain
     };
 }
 

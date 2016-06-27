@@ -15,9 +15,8 @@ const styles = {
 
 var Login = React.createClass({
     showLogin: function () {
-        console.log('calling login with url: http://localhost:3000/app/dashboard')
         this.props.lock.show({
-            callbackURL: 'http://localhost:3000/app/dashboard',
+            callbackURL: this.props.site_domain+'/app/dashboard',
             responseType: 'token',
             authParams: {
                 scope: 'openid nickname email app_metadata'
@@ -44,6 +43,7 @@ var Login = React.createClass({
 function mapStateToProps(state, ownProps) {
     return {
         lock: state.auth.lock,
+        site_domain: state.auth.site_domain
     };
 }
 

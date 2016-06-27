@@ -127,7 +127,8 @@ app.use((req, res, next) => {
         const initialState = {
             auth: {
                 auth0_domain: process.env.AUTH0_DOMAIN,
-                auth0_client: process.env.AUTH0_CLIENT
+                auth0_client: process.env.AUTH0_CLIENT,
+                site_domain: process.env.SITE_DOMAIN
             }
         };
 
