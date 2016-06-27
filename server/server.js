@@ -2,7 +2,7 @@ import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
-import jwt from 'express-jwt';
+import morgan from 'morgan'
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -30,7 +30,9 @@ import Helmet from 'react-helmet';
 
 // Import required modules
 import routes from '../shared/routes';
-import user_routes from './routes/user.routes';
+import service_routes from './routes/service.routes';
+import event_routes from './routes/event.routes';
+import workplace_routes from './routes/workplace.routes';
 import {fetchComponentData} from './util/fetchData';
 import serverConfig from './config';
 
@@ -42,18 +44,16 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
     }
 });
 
-// initialize JWT authentication
-var jwtCheck = jwt({
-    secret: new Buffer(process.env.AUTH0_SECRET, 'base64'),
-    audience: process.env.AUTH0_CLIENT
-});
+
 
 // Apply body Parser and server public assets and routes
+app.use(morgan('combined'));
 app.use(bodyParser.json({limit: '20mb'}));
 app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', jwtCheck);
-app.use('/api/user', user_routes);
+app.use('/api', event_routes);
+app.use('/api', workplace_routes);
+app.use('/api', service_routes);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {

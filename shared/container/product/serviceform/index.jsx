@@ -1,64 +1,51 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import ChooseWorkplace from '../../../components/product/serviceform/chooseworkplace';
-import ChooseServices from '../../../components/product/serviceform/chooseservices';
-import ChooseDate from '../../../components/product/serviceform/choosedate';
-import { formAsyncSetWorkplace, formAsyncSetService } from '../../../redux/actions/serviceform.actions';
+import Paper from 'material-ui/Paper';
+import { formInitialize } from '../../../redux/actions/serviceform.actions';
+import Complete from './complete';
+import Error from './error';
+import Stepper from './stepper';
 
+const styles = {
+    paper: {
+        marginTop: 20,
+        boxSizing: 'content-box'
+    }
+};
 
 var ServiceFormIndex = React.createClass({
-    propTypes: {
-        stepName: React.PropTypes.oneOf(['chooseWorkplace', 'chooseService', 'chooseDate', 'orderSummary', 'complete']).isRequired
+    componentDidMount: function () {
+        var lock = this.props.lock;
+        this.props.formInitialize(lock);
     },
     render: function () {
-        var content;
-        switch(this.props.stepName){
-            case 'chooseWorkplace':
-                content = <ChooseWorkplace
-                            asyncSetWorkplace={this.props.asyncSetWorkplace}
-                            workplace={this.props.workplace}
-                            isLoading={this.props.isLoading}/>;
-                break;
-            case 'chooseService':
-                content = <ChooseServices
-                            asyncSetService={this.props.asyncSetService}
-                            availableServices={this.props.availableServices}
-                            isLoading={this.props.isLoading}/>;
-                break;
-            case 'chooseDate':
-                content = <ChooseDate />
-                break;
-            case 'orderSummary':
-                break;
-            case 'complete':
-                break;
-            default:
-                console.assert(false, 'did not recognize props.stepName value in ServiceFormIndex');
-        }
+        var stepName = this.props.stepName;
         return (
-            <div>
-            { content }
-            </div>
+            <Paper style={styles.paper} zDepth={1}>
+                {stepName === 'complete' ? <Complete/> :
+                    stepName === 'error' ? <Error/> : <Stepper/>}
+            </Paper>
         );
     }
 });
 
-function mapStateToProps(state, ownProps){
+ServiceFormIndex.propTypes = {
+    stepName: React.PropTypes.oneOf(['chooseWorkplace', 'chooseService', 'orderSummary', 'complete', 'error']).isRequired,
+    lock: React.PropTypes.object.isRequired,
+    formInitialize: React.PropTypes.func.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
     return {
-        isLoading: state.serviceform.isLoading,
-        workplace: state.serviceform.workplace,
-        stepName: state.serviceform.stepName,
-        availableServices: state.serviceform.availableServices
+        stepName: state.serviceform.ui.stepName,
+        lock: state.auth.lock,
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        asyncSetWorkplace: (workplace)=>{
-            dispatch(formAsyncSetWorkplace(workplace))
-        },
-        asyncSetService: (service) => {
-            dispatch(formAsyncSetService(service))
+        formInitialize: (lock) => {
+            dispatch(formInitialize(lock));
         }
     }
 }

@@ -68,7 +68,7 @@ var Index = React.createClass({
         init();
     },
     render: function(){
-        var appPath = "/app";
+        var appPath = "/app/book";
         return (
             <div id="page-top">
                 <Helmet

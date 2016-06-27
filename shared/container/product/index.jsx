@@ -1,36 +1,14 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
-import appNavBar from '../../components/product/navbar';
-import formNavBar from '../../components/product/serviceform/navbar';
-import { authLogOut } from '../../redux/actions/auth.actions';
+import NavBar from './navbar';
 import { browserHistory } from 'react-router';
 
 
 var Index = React.createClass({
-    showLogin: function(){
-        this.props.lock.show({
-            responseType: 'token',
-            authParams: {
-                scope: 'openid nickname email'
-            }
-        });
-    },
     render: function(){
-        var NavBar;
-        switch(this.props.nextRoute){
-            case "book":
-            case "loading":
-            case "login":
-                NavBar = formNavBar;
-                break;
-            default:
-                NavBar = appNavBar;
-        }
-
-
         return (
-            <div className="container">
+            <div id="product-app" className="container">
                 <Helmet
                     title="YourTime App"
                     meta={[
@@ -44,17 +22,18 @@ var Index = React.createClass({
                       content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
                     },
                   ]}
-                    link={[
-                {"href":"/css/bootstrap.min.css","rel":"stylesheet"},
-                {"href":"/css/product.css","rel":"stylesheet"},
-                {"href":"/font-awesome/css/font-awesome.min.css","rel":"stylesheet","type":"text/css"},
-                {"href":"https://fonts.googleapis.com/css?family=Montserrat:400,700","rel":"stylesheet","type":"text/css"},
-                {"href":"https://fonts.googleapis.com/css?family=Kaushan+Script","rel":"stylesheet","type":"text/css"},
-                {"href":"https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic","rel":"stylesheet","type":"text/css"},
-                {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
+                link={[
+                    {"href":"https://fonts.googleapis.com/css?family=Roboto:400,300,500","rel":"stylesheet", "type":"text/css"},
+                    {"href":"/css/bootstrap.min.css","rel":"stylesheet"},
+                    {"href":"/css/product.css","rel":"stylesheet"},
+                    {"href":"/font-awesome/css/font-awesome.min.css","rel":"stylesheet","type":"text/css"},
+                    {"href":"https://fonts.googleapis.com/css?family=Montserrat:400,700","rel":"stylesheet","type":"text/css"},
+                    {"href":"https://fonts.googleapis.com/css?family=Kaushan+Script","rel":"stylesheet","type":"text/css"},
+                    {"href":"https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic","rel":"stylesheet","type":"text/css"},
+                    {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
                 ]}
                 />
-                <NavBar logOut={this.props.logOut}/>
+                <NavBar/>
                 {this.props.children}
             </div>
         );
@@ -72,12 +51,7 @@ function mapStateToProps(state, ownProps){
 }
 
 function mapDispatchToProps(dispatch){
-    return {
-        logOut: ()=>{
-            dispatch(authLogOut());
-            browserHistory.push('/app/login');
-        }
-    }
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

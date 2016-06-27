@@ -1,7 +1,6 @@
 import * as ActionTypes from '../constants/constants';
 import Config from '../../../server/config';
-import request from 'superagent';
-import fetch from 'isomorphic-fetch';
+import { formSetState } from './serviceform.actions';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
@@ -40,14 +39,14 @@ export function authSetLock(lock){
 }
 
 export function authGetUser(lock) {
-    // Sets isLoading: true,
-    // then looks for localStorage or URL hash token and gets corresponding user if available
-    var getIdToken = function(){
+    var tokenFromHash = false;
+    function getIdToken() {
         var idToken = localStorage.getItem('userToken');
         var authHash = lock.parseHash(window.location.hash);
         if (!idToken && authHash) {
             if (authHash.id_token) {
-                idToken = authHash.id_token
+                tokenFromHash = true;
+                idToken = authHash.id_token;
                 localStorage.setItem('userToken', authHash.id_token);
             }
             if (authHash.error) {
@@ -55,8 +54,12 @@ export function authGetUser(lock) {
                 return null;
             }
         }
-        return idToken;        
-    };
+        return idToken;
+    }
+        
+    // Sets isLoading: true,
+    // then looks for localStorage or URL hash token and gets corresponding user if available
+    // then sets the user, and if user.state exists then sets the service form state
     return (dispatch, getState) => {
         dispatch(authRequestingUser());
         var token = getIdToken();
