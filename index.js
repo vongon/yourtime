@@ -1,4 +1,4 @@
-require('dotenv').config();
+if(!process.env.heroku) require('dotenv').config();
 require('babel-register');
 require('babel-polyfill');
 require('css-modules-require-hook');
