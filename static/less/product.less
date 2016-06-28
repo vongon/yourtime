@@ -1,5 +1,9 @@
+@import "variables.less";
+@import "mixins.less";
+
 body {
   background-color: #f8f8f8;
+  font-family: "Roboto"
 }
 
 .dashboard-title{
@@ -19,4 +23,18 @@ body {
 
 .navbar-default {
   background-color: #ffffff;
+  .navbar-brand {
+    color: @brand-primary;
+    .script-font;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      color: darken(@brand-primary, 10%);
+    }
+  }
 }
+
+
+
+

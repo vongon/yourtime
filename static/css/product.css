@@ -1,24 +1,30 @@
 body {
-    background-color: #f8f8f8;
-    font-family: 'Roboto', sans-serif;
+  background-color: #f8f8f8;
+  font-family: "Roboto";
 }
-
 .dashboard-title {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-
 .panel {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-
 .panel .icon {
-    position: absolute;
-    margin-left: -20px;
-    margin-top: 10px;
-    z-index: 100;
-    background-color: #ddd;
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 10px;
+  z-index: 100;
+  background-color: #ddd;
 }
-
 .navbar-default {
-    background-color: #ffffff;
+  background-color: #ffffff;
+}
+.navbar-default .navbar-brand {
+  color: #00D7FF;
+  font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:active,
+.navbar-default .navbar-brand.active {
+  color: #00accc;
 }
