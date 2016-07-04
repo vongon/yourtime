@@ -30,9 +30,7 @@ import Helmet from 'react-helmet';
 
 // Import required modules
 import routes from '../shared/routes';
-import service_routes from './routes/service.routes';
-import event_routes from './routes/event.routes';
-import workplace_routes from './routes/workplace.routes';
+import api_routes from './routes/index.routes';
 import {fetchComponentData} from './util/fetchData';
 import serverConfig from './config';
 
@@ -51,9 +49,7 @@ app.use(morgan('combined'));
 app.use(bodyParser.json({limit: '20mb'}));
 app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', event_routes);
-app.use('/api', workplace_routes);
-app.use('/api', service_routes);
+api_routes(app);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {

@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema(
     {
-        name: String,
-        day_of_week: Number
+        location_id: Schema.Types.ObjectId,
+        name: String
     }
 );
 

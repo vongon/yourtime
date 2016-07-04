@@ -3,12 +3,12 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema(
     {
-        type: String,
+        type: {type: String, enum: ['auto']}, //we will add more service types in the future
+        category: {type: String, enum: ['oil change','tire rotation', 'inspection']},
         name: String,
         description: String,
         price: Number,
-        workplace_id: Schema.Types.ObjectId,
-        workplace_name: String
+        workplace_id: Schema.Types.ObjectId
     }
 );
 

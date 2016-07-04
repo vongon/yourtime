@@ -1,19 +1,14 @@
 import mongoose from 'mongoose';
+var Schema = mongoose.Schema;
 import { ServiceSchema } from './service.model';
-import { WorkplaceSchema } from './workplace.model';
 
-var schema = new mongoose.Schema(
+var schema = new Schema(
     {
-        user_id: String,
-        user: {},
-        service: ServiceSchema,
-        workplace: WorkplaceSchema,
-        date: Date,
-        vehicle: {
-            make: String,
-            model: String,
-            year: String
-        }
+        user_id: Schema.Types.ObjectId,
+        workplace_id: Schema.Types.ObjectId,
+        vehicle_id: Schema.Types.ObjectId,
+        services: [ ServiceSchema ],
+        date: Date
     }
 );
 
