@@ -3,12 +3,8 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema(
     {
-        user_id: Schema.Types.ObjectId,
-        make: String,
-        model: String,
-        year: String,
-        license_plate: String,
-        vin: String
+        user_id: String, //Auth0 id, not mongodb id
+        edmunds_id: String //Edmunds id, not mongodb id
     }
 );
 

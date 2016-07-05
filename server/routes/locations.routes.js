@@ -11,7 +11,7 @@ router.route('/locations')
 
 router.route('/locations/:id')
     .get(EventController.getLocationsId)
-    .post(jwtCheck, requireAdmin, EventController.postLocationsId);
+    .put(jwtCheck, requireAdmin, EventController.putLocationsId);
 
 
 export default router;
