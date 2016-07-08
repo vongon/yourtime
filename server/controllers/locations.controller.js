@@ -60,7 +60,7 @@ export function getLocationById(req, res) {
  Edit location by id
  Update a location
  @req.body.name - new name for location
- @req.body.newDayId - id of new day object to add
+ @req.body.newDayId - id of new day object to add, if already added to location then this will be skipped
  */
 export function putLocationById(req, res) {
     var id = req.params.id;
@@ -80,7 +80,11 @@ export function putLocationById(req, res) {
         if (req.body.name) location.name = req.body.name;
         if (req.body.newDayId) {
             var newDayId = req.body.newDayId;
-            if (isValid(req.body.newDayId)) {
+            if( location.days.indexOf(newDayId) >= 0){
+                /*day is already added to location*/
+                saveLocationAndFinish(location);
+            }
+            else if (isValid(req.body.newDayId)) {
                 Day.findById(newDayId, function (err, day) {
                     if (err) return res.status(500).send({err: 'could not query database'});
                     if (!day) return res.status(404).send({err: 'no day found for id:' + newDayId});

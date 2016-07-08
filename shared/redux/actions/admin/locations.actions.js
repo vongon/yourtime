@@ -99,6 +99,7 @@ export function adminDeleteLocation(id) {
                     dispatch(adminLocationSetSnackbarMessage('error: ' + err.body));
                     return;
                 }
+                //todo: also delete days that are owned by this location
                 console.log('locations deleted', res.body);
                 dispatch(adminLocationsSetLoading(false));
                 dispatch(adminLocationSetSnackbarMessage('successfully deleted location!'));

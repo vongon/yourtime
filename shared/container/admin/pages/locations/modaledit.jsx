@@ -91,8 +91,13 @@ var ModalEdit = React.createClass({
                     </div>
 
                     <div>
-                        <label for="days">Days <span
-                            style={styles.daysSpan}>days that YourTime operates this location</span></label>
+                        <label for="days">Days
+                            <span style={styles.daysSpan}> days that YourTime operates this location</span>
+                        </label>
+                        <div>
+                            <button className="btn btn-xs btn-primary" style={{marginBottom: 10}}>+ Add Day</button>
+                        </div>
+
                         <ul className="nav nav-tabs" role="tablist">
                             <li role="presentation" className="active"><a href="#upcoming-days" aria-controls="upcoming"
                                                                           role="tab" data-toggle="tab">Upcoming</a></li>
@@ -105,10 +110,34 @@ var ModalEdit = React.createClass({
                                  id="upcoming-days">
                                 <table className="table table-condensed table-striped">
                                     <tbody>
+                                    {location.days.map(function(day){
+                                        return <tr style={day._id ? {} : {color:'#CCC'}}
+                                            key={day.dayId}>
+                                            <td>{day.date || 'null'}</td>
+                                            <td>{day.capacity || 'null'}</td>
+                                            <td><button type="button" className="btn btn-xs btn-default">edit</button></td>
+                                            <td><button type="button" className="btn btn-xs btn-danger">del</button></td>
+                                        </tr>
+                                        })
+                                    }
                                     </tbody>
                                 </table>
                             </div>
-                            <div role="tabpanel" className="tab-pane fade" id="past-days">past days</div>
+                            <div role="tabpanel" className="tab-pane fade" id="past-days">
+                                <table className="table table-condensed table-striped">
+                                    <tbody>
+                                    {location.days.map(function(day){
+                                        return <tr key={day.dayId}>
+                                            <td>{day.date || 'null'}</td>
+                                            <td>{day.capacity || 'null'}</td>
+                                            <td><button type="button" className="btn btn-xs btn-default">edit</button></td>
+                                            <td><button type="button" className="btn btn-xs btn-danger">del</button></td>
+                                        </tr>
+                                    })
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </div>

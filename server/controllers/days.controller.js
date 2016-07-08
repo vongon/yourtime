@@ -1,4 +1,5 @@
 import { Day } from '../models/day.model';
+import { Location } from '../models/location.model';
 import moment from 'moment';
 var isValid = require('mongoose').Types.ObjectId.isValid;
 
@@ -60,7 +61,7 @@ export function putDayById(req, res){
 
 
 /*
- delete day by id
+ delete day by id, will also remove day from location[location_id].days array
  */
 export function deleteDayById(req, res){
     var id = req.params.id;
@@ -71,9 +72,6 @@ export function deleteDayById(req, res){
     Day.findById(id, function(err,day){
         if (err) return res.status(500).send({err: 'could not query day by id'});
         if(!day) return res.status(404).send({err: 'no day found for id:'+id});
-
-        if(req.body.date) day.date = req.body.date;
-        if(req.body.capacity) day.capacity = req.body.capacity;
 
         day.remove(function(err, day){
             if (err) return res.status(500).send({err: 'could not delete day from database'});
