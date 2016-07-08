@@ -10,7 +10,9 @@ router.route('/services')
     .post(jwtCheck, requireAdmin, EventController.postServices);
 
 router.route('/services/:id')
-    .put(jwtCheck, requireAdmin, EventController.putServiceById);
+    .get(EventController.getServiceById)
+    .put(jwtCheck, requireAdmin, EventController.putServiceById)
+    .delete(jwtCheck, requireAdmin, EventController.deleteServiceById);
 
 
 export default router;

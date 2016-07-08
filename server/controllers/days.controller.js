@@ -57,3 +57,27 @@ export function putDayById(req, res){
         });
     });
 }
+
+
+/*
+ delete day by id
+ */
+export function deleteDayById(req, res){
+    var id = req.params.id;
+    if(!isValid(id)) {
+        res.status(400).send({err: 'invalid id'});
+        return;
+    }
+    Day.findById(id, function(err,day){
+        if (err) return res.status(500).send({err: 'could not query day by id'});
+        if(!day) return res.status(404).send({err: 'no day found for id:'+id});
+
+        if(req.body.date) day.date = req.body.date;
+        if(req.body.capacity) day.capacity = req.body.capacity;
+
+        day.remove(function(err, day){
+            if (err) return res.status(500).send({err: 'could not delete day from database'});
+            res.send(day);
+        });
+    });
+}

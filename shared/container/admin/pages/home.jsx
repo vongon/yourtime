@@ -1,17 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import AutoPanel from './dashboard/autopanel';
-import NewPanel from '../../components/product/dashboard/newpanel';
 import Divider from 'material-ui/Divider';
-import {dashGetEvents} from '../../redux/actions/dashboard.actions';
+import {dashGetEvents} from '../../../redux/actions/dashboard.actions';
 import Paper from 'material-ui/Paper';
-import LoadingSpinner from '../../components/product/loadingspinner';
+import LoadingSpinner from '../../../components/product/loadingspinner';
 
 
 
 
 
-var Dashboard = React.createClass({
+var Home = React.createClass({
     componentDidMount: function(){
         console.log('dash mounted');
         this.props.getEvents();
@@ -22,18 +20,14 @@ var Dashboard = React.createClass({
         }
         return (
             <div>
-                <h2 className="dashboard-title">My Services</h2>
-                <NewPanel />
-                {this.props.events.map(function(event){
-                    return <AutoPanel key={event._id} event={event} />
-                })}
+                <h2 className="dashboard-title">Admin Home</h2>
                 <Divider style={{marginTop: 20, marginBottom:20}}/>
             </div>
         );
     }
 });
 
-Dashboard.propTypes = {
+Home.propTypes = {
     isLoading: React.PropTypes.bool.isRequired,
     events: React.PropTypes.array.isRequired,
     getEvents: React.PropTypes.func.isRequired
@@ -54,4 +48,4 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

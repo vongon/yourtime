@@ -26,14 +26,30 @@ var populateEvent = function(event, req, done){
 
 
 /*
- Get all events owned by a user
+ Get events
+ user_id: (null) get all events (admin only)
+ user_id: get events owned by that user, must match auth token
  */
 export function getEvents(req, res) {
-    var user_id = req.user.sub;
-    Event.find({user_id: user_id}, function (err, events) {
-        if (err) return res.status(500).send({err: 'could not query database'});
-        res.send(events);
-    });
+    var auth_uid = req.user.sub;
+    var query_uid = req.query.user_id;
+    if(query_uid){
+        /*query param user_id provided*/
+        if (query_uid!==auth_uid) return res.status(400).send({err: 'you must be logged in as same user as user_id query param'});
+        Event.find({user_id: query_uid}, function (err, events) {
+            if (err) return res.status(500).send({err: 'could not query database'});
+            res.send(events);
+        });
+    } else if((req.user.app_metadata||{}).admin){
+        /*user is an admin*/
+        Event.find({}, function (err, events) {
+            if (err) return res.status(500).send({err: 'could not query database'});
+            res.send(events);
+        });
+    } else {
+        /*no query param provided for user_id, and user is not admin*/
+        res.status(400).send({err: 'need a user_id query param to get events, or admin authority to get all events'});
+    }
 }
 
 

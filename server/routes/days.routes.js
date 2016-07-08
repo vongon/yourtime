@@ -10,6 +10,7 @@ router.route('/days')
 
 router.route('/days/:id')
     .get(EventController.getDayById)
-    .put(jwtCheck, requireAdmin, EventController.putDayById);
+    .put(jwtCheck, requireAdmin, EventController.putDayById)
+    .delete(jwtCheck, requireAdmin, EventController.deleteDayById);
 
 export default router;

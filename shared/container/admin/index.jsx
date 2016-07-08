@@ -25,6 +25,7 @@ var Index = React.createClass({
                     {"href":"https://fonts.googleapis.com/css?family=Roboto:400,300,500","rel":"stylesheet", "type":"text/css"},
                     {"href":"/css/bootstrap.min.css","rel":"stylesheet"},
                     {"href":"/css/product.css","rel":"stylesheet"},
+                    {"href":"/css/sb-admin-2.css","rel":"stylesheet"},
                     {"href":"/font-awesome/css/font-awesome.min.css","rel":"stylesheet","type":"text/css"},
                     {"href":"https://fonts.googleapis.com/css?family=Montserrat:400,700","rel":"stylesheet","type":"text/css"},
                     {"href":"https://fonts.googleapis.com/css?family=Kaushan+Script","rel":"stylesheet","type":"text/css"},

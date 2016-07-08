@@ -78,3 +78,37 @@ export function putServiceById(req, res) {
         });
     });
 }
+
+
+
+/*
+ Delete a service by id
+ */
+export function deleteServiceById(req, res) {
+    var id = req.params.id;
+    if (!isValid(id)) return res.status(400).send({err: 'invalid id'});
+    Service.findById(id, function (err, service) {
+        if (err) return res.status(500).send({err: 'could not query service by id'});
+        if (!service) return res.status(404).send({err: 'no service found for id:' + id});
+
+        service.remove(function (err, service) {
+            if (err) return res.status(500).send({err: 'could not delete service object to database'});
+            res.send(service);
+        });
+    });
+}
+
+
+
+/*
+ get a service by id
+ */
+export function getServiceById(req, res) {
+    var id = req.params.id;
+    if (!isValid(id)) return res.status(400).send({err: 'invalid id'});
+    Service.findById(id, function (err, service) {
+        if (err) return res.status(500).send({err: 'could not query service by id'});
+        if (!service) return res.status(404).send({err: 'no service found for id:' + id});
+        res.send(service);
+    });
+}

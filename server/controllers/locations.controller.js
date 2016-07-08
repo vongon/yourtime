@@ -35,7 +35,7 @@ export function postLocations(req, res) {
 /*
  Get location by id
  */
-export function getLocationsId(req, res) {
+export function getLocationById(req, res) {
     var id = req.params.id;
     if (!isValid(id)) {
         res.status(400).send({err: 'invalid id'});
@@ -62,7 +62,7 @@ export function getLocationsId(req, res) {
  @req.body.name - new name for location
  @req.body.newDayId - id of new day object to add
  */
-export function putLocationsId(req, res) {
+export function putLocationById(req, res) {
     var id = req.params.id;
     if (!isValid(id)) return res.status(400).send({err: 'invalid id'});
 
@@ -93,6 +93,28 @@ export function putLocationsId(req, res) {
         } else {
             saveLocationAndFinish(location);
         }
+    });
+
+}
+
+
+
+/*
+ delete location by id
+ */
+export function deleteLocationById(req, res) {
+    var id = req.params.id;
+    if (!isValid(id)) return res.status(400).send({err: 'invalid id'});
+
+    Location.findById(id, function (err, location) {
+        if (err) return res.status(500).send({err: 'could not query location by id'});
+        if (!location) return res.status(404).send({err: 'no location found for id:' + id});
+
+        location.remove(function (err, location) {
+            if (err) return res.status(500).send({err: 'could not delete location object to database'});
+            res.send(location);
+        });
+
     });
 
 }

@@ -10,8 +10,9 @@ router.route('/locations')
     .post(jwtCheck, requireAdmin, EventController.postLocations);
 
 router.route('/locations/:id')
-    .get(EventController.getLocationsId)
-    .put(jwtCheck, requireAdmin, EventController.putLocationsId);
+    .get(EventController.getLocationById)
+    .put(jwtCheck, requireAdmin, EventController.putLocationById)
+    .delete(jwtCheck, requireAdmin, EventController.deleteLocationById);
 
 
 export default router;
