@@ -1,22 +1,65 @@
 import { Day } from '../models/day.model';
 import { Location } from '../models/location.model';
 import moment from 'moment';
+import map from 'async/map';
 var isValid = require('mongoose').Types.ObjectId.isValid;
 
+
+
+
 /*
- Create new day
+ Get Days
+ @query.location_id: optional, get days for a specific location
+ */
+export function getDays(req, res){
+    var location_id = req.query.location_id;
+        Day.find(location_id ? {location_id: req.query.location_id} : {}, function(err, days){
+            if (err) {
+                res.status(500).send({err: 'could not query database'});
+                return console.error(err);
+            }
+            map(days, (day, eCb)=>{
+                day.getEventCount((err, count)=>{
+                    if(err) return eCb(err);
+                    eCb(null, {...day.toJSON(), eventCount: count});
+                });
+            }, (err, results)=>{
+                if(err) res.status(500).send({err: 'could not query database'});
+                res.send(results);
+            });
+
+        });
+}
+
+/*
+ Create new
+ @body.location_id: required, location that day is attached to
  @body.day: required, day object to create
  @body.capacity: optional, defaults to 8
  */
-export function postDay(req, res){
-    if(!req.body.date) return res.status(400).send({err: 'requires a date attribute in body to create location'});
+export function postDays(req, res){
+    if(!req.body.location_id) return res.status(400).send({err: 'requires a location_id attribute in body to create day'});
+    if(!isValid(req.body.location_id)) return res.status(400).send({err: 'invalid location_id'});
+    if(!req.body.date) return res.status(400).send({err: 'requires a date attribute in body to create day'});
     if(!moment(req.body.date).isValid())return res.status(400).send({err: 'invalid date'});
     var day = new Day;
     day.date = req.body.date;
     day.capacity = req.body.capacity || 8;
-    day.save(function(err, day){
-        if (err) return res.status(500).send({err: 'could not save day object to database, did you send a valid date?'});
-        res.send(day);
+
+    Location.findById(req.body.location_id, function(err, location){
+        if (err) {
+            res.status(500).send({err: 'could not query location by id'});
+            return console.error(err);
+        }
+        if(!location){
+            res.status(404).send({err: 'no location found for id'});
+            return;
+        }
+        day.location_id = req.body.location_id;
+        day.save(function(err, day){
+            if (err) return res.status(500).send({err: 'could not save day object to database, did you send a valid date?'});
+            res.send(day);
+        });
     });
 }
 
@@ -29,7 +72,12 @@ export function getDayById(req, res) {
     Day.findById(id, function(err,day){
         if (err) return res.status(500).send({err: 'could not query database'});
         if(!day) return res.status(404).send({err: 'no day found for id:'+id});
-        res.send(day);
+
+        day.getEventCount(function(err, count){
+            if (err) return res.status(500).send({err: 'could not query database'});
+            res.send({...day.toJSON(), eventCount: count});
+        });
+
     });
 
 }
@@ -38,6 +86,7 @@ export function getDayById(req, res) {
  Edit day by id
  @body.date - new date to assign to day
  @body.capacity - new capacity
+ @body.location_id - new location_id
  */
 export function putDayById(req, res){
     var id = req.params.id;
@@ -51,6 +100,7 @@ export function putDayById(req, res){
 
         if(req.body.date) day.date = req.body.date;
         if(req.body.capacity) day.capacity = req.body.capacity;
+        if(req.body.location_id) day.location_id = req.body.location_id;
 
         day.save(function(err, day){
             if (err) return res.status(500).send({err: 'could not save day object to database, did you send an invalid date?'});

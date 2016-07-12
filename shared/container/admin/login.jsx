@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Snackbar from 'material-ui/Snackbar';
+import { authSetSnackbarMessage } from '../../redux/actions/auth.actions';
 
 const styles = {
     col: {
@@ -22,6 +24,13 @@ var Login = React.createClass({
                 scope: 'openid nickname email app_metadata'
             },
             container: 'auth0-lock-container'
+            ,
+            dict: {
+                signin: {
+                    title: "Admin Dashboard Login",
+                    emailPlaceholder: "must_be_admin@email.com"
+                }
+            }
         });
     },
     componentDidMount: function () {
@@ -35,6 +44,12 @@ var Login = React.createClass({
                     <div style={styles.auth0_container}
                         id="auth0-lock-container"></div>
                 </div>
+                <Snackbar
+                    open={this.props.message !== ''}
+                    message={this.props.message}
+                    autoHideDuration={4000}
+                    onRequestClose={this.props.clearMessage}
+                />
             </div>
         );
     }
@@ -43,9 +58,18 @@ var Login = React.createClass({
 function mapStateToProps(state, ownProps) {
     return {
         lock: state.auth.lock,
-        site_domain: state.auth.site_domain
+        site_domain: state.auth.site_domain,
+        message: state.auth.message || ''
     };
 }
 
-export default connect(mapStateToProps)(Login);
+function mapDispatchToProps(dispatch) {
+    return {
+        clearMessage: () => {
+            dispatch(authSetSnackbarMessage(''));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

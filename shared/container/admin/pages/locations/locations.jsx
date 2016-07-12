@@ -4,6 +4,7 @@ import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import LoadingSpinner from '../../../../components/product/loadingspinner';
 import {adminGetLocations, adminLocationSetSnackbarMessage} from '../../../../redux/actions/admin/locations.actions';
+import {adminDaySetSnackbarMessage} from '../../../../redux/actions/admin/days.actions';
 import ModalEdit from './modaledit';
 import ModalCreate from './modalcreate';
 import Snackbar from 'material-ui/Snackbar';
@@ -18,6 +19,11 @@ var LocationsPage = React.createClass({
     },
     componentDidMount: function () {
         this.props.getLocations();
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.isLoading === true){
+            this.setState({selectedLocation: null});
+        }
     },
     render: function () {
         if (this.props.isLoading) {
@@ -107,9 +113,9 @@ LocationsPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        isLoading: state.admin.locations.isLoading || false,
+        isLoading: state.admin.locations.isLoading || state.admin.days.isLoading || false,
         locations: state.admin.locations.objects || [],
-        message: state.admin.locations.message || ''
+        message: state.admin.locations.message || state.admin.days.message || ''
     };
 }
 
@@ -120,6 +126,7 @@ function mapDispatchToProps(dispatch) {
         },
         clearMessage: () => {
             dispatch(adminLocationSetSnackbarMessage(''));
+            dispatch(adminDaySetSnackbarMessage(''));
         }
     }
 }

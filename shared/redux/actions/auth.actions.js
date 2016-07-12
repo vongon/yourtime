@@ -38,6 +38,13 @@ export function authSetLock(lock){
     }
 }
 
+export function authSetSnackbarMessage(message){
+    return {
+        type: ActionTypes.AUTH_SET_SNACKBAR_MESSAGE,
+        message: message
+    };
+}
+
 export function authGetUser(lock) {
     var tokenFromHash = false;
     function getIdToken() {

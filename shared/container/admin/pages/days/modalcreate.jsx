@@ -2,15 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {adminEditWorkplace, adminDeleteWorkplace} from '../../../../redux/actions/admin/workplaces.actions';
-import { red500 } from 'material-ui/styles/colors';
+import DatePicker from 'material-ui/DatePicker';
+import {red500} from 'material-ui/styles/colors'
+import { adminCreateDay } from '../../../../redux/actions/admin/days.actions'
 
 
-var ModalCreate = React.createClass({
+var ModalEdit = React.createClass({
     getInitialState: function () {
         return {
-            workplace: this.props.workplace,
-            deleteRequested: false
+            day: {
+                date: null,
+                capacity: '',
+                location_id: this.props.defaultLocationId || ''
+            }
         }
     },
     onRequestDelete: function () {
@@ -18,7 +22,7 @@ var ModalCreate = React.createClass({
         if (!this.state.deleteRequested) {
             this.setState({deleteRequested: true});
         } else {
-            this.props.deleteWorkplace(this.props.workplace._id);
+            this.props.deleteDay(this.props.day._id);
             this.props.onRequestClose();
         }
     },
@@ -30,26 +34,20 @@ var ModalCreate = React.createClass({
                 onTouchTap={this.props.onRequestClose}
             />,
             <FlatButton
-                label={this.state.deleteRequested ? "Click to confirm delete" : "Delete"}
-                primary={false}
-                style={this.state.deleteRequested ? {color:red500} : {}}
-                onTouchTap={this.onRequestDelete}
-            />,
-            <FlatButton
                 label="Submit"
                 primary={true}
                 keyboardFocused={true}
                 onTouchTap={()=>{
-                    this.props.onRequestSubmit(this.state.workplace);
+                    this.props.onRequestSubmit(this.state.day);
                     this.props.onRequestClose();
                     }
                 }
             />
         ];
-        var workplace = this.state.workplace;
+        var day = this.state.day;
         return (
             <Dialog
-                title="Edit Workplace"
+                title="Create Day"
                 actions={actions}
                 modal={false}
                 open={this.props.open}
@@ -58,47 +56,50 @@ var ModalCreate = React.createClass({
             >
                 <div style={{marginTop:20}}>
                     <div className="form-group">
-                        <label for="exampleInputEmail1">id</label>
-                        <input type="text"
-                               className="form-control disabled"
-                               value={workplace._id}
-                               readOnly
-                               onChange={()=>{}}/>
+                        <label for="name">Date</label>
+                        <DatePicker
+                            hintText="Pick a date"
+                            value={day.date}
+                            onChange={(err, date)=>{
+                                this.setState({
+                                    day: {...day, date:date}
+
+                                })
+                            }}
+                        />
                     </div>
                     <div className="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Capacity</label>
                         <input
                             className="form-control"
-                            placeholder="Enter name of workplace"
-                            value={workplace.name}
+                            placeholder="6,7,8,etc..."
+                            value={day.capacity}
                             onChange={
                             (e)=>{
                                 this.setState({
-                                    workplace : {
-                                        ...workplace,
-                                        name: e.target.value
+                                    day : {
+                                        ...day,
+                                        capacity: e.target.value
                                         }
                                 });
                             }
                         }/>
                     </div>
                     <div className="form-group">
-                        <label for="location">Location</label>
+                        <label for="name">Location</label>
                         <select
                             className="form-control"
-                            value={workplace.location_id}
+                            value={day.location_id}
                             onChange={
-                                (e)=>{
-                                    console.log('selected a value');
-                                    this.setState({
-                                        workplace: {
-                                            ...workplace,
-                                            location_id: e.target.value
+                            (e)=>{
+                                this.setState({
+                                    day : {
+                                        ...day,
+                                        location_id: e.target.value
                                         }
-                                    });
-                                }
+                                });
                             }
-                        >
+                        }>
                             <option value=''></option>
                             {this.props.locations.map(
                                 function(location){
@@ -117,30 +118,25 @@ var ModalCreate = React.createClass({
     }
 });
 
-ModalCreate.propTypes = {
+ModalEdit.propTypes = {
     open: React.PropTypes.bool.isRequired,
     onRequestClose: React.PropTypes.func.isRequired,
     onRequestSubmit: React.PropTypes.func.isRequired,
-    deleteWorkplace: React.PropTypes.func.isRequired,
     locations: React.PropTypes.array.isRequired,
-    workplace: React.PropTypes.object.isRequired
+    defaultLocationId: React.PropTypes.string
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        locations: state.admin.locations.objects || [],
-        workplace: ownProps.workplace || {}
+        locations: state.admin.locations.objects
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
-        deleteWorkplace: (id) => {
-            dispatch(adminDeleteWorkplace(id));
-        },
-        onRequestSubmit: (workplace) => {
-            dispatch(adminEditWorkplace(workplace));
+        onRequestSubmit: (day) => {
+            dispatch(adminCreateDay(day));
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEdit);

@@ -29,7 +29,7 @@ import {match, RouterContext} from 'react-router';
 import Helmet from 'react-helmet';
 
 // Import required modules
-import routes from '../shared/routes';
+import getRoutes from '../shared/routes';
 import api_routes from './routes/index.routes';
 import {fetchComponentData} from './util/fetchData';
 import serverConfig from './config';
@@ -107,7 +107,17 @@ const renderError = err => {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res, next) => {
-    match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
+    const initialState = {
+        auth: {
+            auth0_domain: process.env.AUTH0_DOMAIN,
+            auth0_client: process.env.AUTH0_CLIENT,
+            site_domain: process.env.SITE_DOMAIN
+        }
+    };
+
+    const store = configureStore(initialState);
+
+    match({routes: getRoutes(store), location: req.url}, (err, redirectLocation, renderProps) => {
         if (err) {
             return res.status(500).end(renderError(err));
         }
@@ -119,16 +129,6 @@ app.use((req, res, next) => {
         if (!renderProps) {
             return next();
         }
-
-        const initialState = {
-            auth: {
-                auth0_domain: process.env.AUTH0_DOMAIN,
-                auth0_client: process.env.AUTH0_CLIENT,
-                site_domain: process.env.SITE_DOMAIN
-            }
-        };
-
-        const store = configureStore(initialState);
 
         return fetchComponentData(store, renderProps.components, renderProps.params)
             .then(() => {

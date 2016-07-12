@@ -16,67 +16,86 @@ import AdminEvents from './container/admin/pages/events/events';
 import AdminLocations from './container/admin/pages/locations/locations';
 import AdminWorkplaces from './container/admin/pages/workplaces/workplaces';
 import AdminServices from './container/admin/pages/services/services';
+import AdminUser from './container/admin/pages/user';
+import { authLogOut, authSetSnackbarMessage } from './redux/actions/auth.actions';
 
 
-var requireAuth = function(nextState, replace){
-    if(typeof localStorage === 'undefined'){
-        console.log('redirecting to loading from requireAuth()');
-        replace({
-            pathname: '/app/loading',
-            state: { nextPathname: nextState.location.pathname }
-        })
-    }
-    else if(!localStorage.userToken){
-        console.log('redirecting from requireAuth()');
-        replace({
-            pathname: '/app/login',
-            state: { nextPathname: nextState.location.pathname }
-        })
-    }
+
+
+
+
+
+var getRoutes = function(store){
+    var store = store;
+
+    var requireUserAuth = function (nextState, replace) {
+        var state = store.getState();
+        if (typeof localStorage === 'undefined') {
+            replace({
+                pathname: '/app/loading',
+                state: {nextPathname: nextState.location.pathname}
+            })
+        }
+        else if (!state.auth.user) {
+            store.dispatch(authLogOut());
+            replace({
+                pathname: '/app/login',
+                state: {nextPathname: nextState.location.pathname}
+            })
+        }
+    };
+
+    var requireAdminAuth = function (nextState, replace) {
+        var state = store.getState();
+        if (typeof localStorage === 'undefined') {
+            replace({
+                pathname: '/admin/loading',
+                state: {nextPathname: nextState.location.pathname}
+            })
+        }
+        else if (!(state.auth.user||{}).admin) {
+            store.dispatch(authSetSnackbarMessage('Admin only login'));
+            store.dispatch(authLogOut());
+            replace({
+                pathname: '/admin/login',
+                state: {nextPathname: nextState.location.pathname}
+            })
+        }
+    };
+
+    return(
+        <Route path="/" component={App}>
+            <IndexRoute component={CompanyPageIndex}/>
+            <Route path="index" component={CompanyPageIndex}/>
+
+            <Route path="app" component={ProductPageIndex}>
+                <IndexRedirect to="loading"/>
+                <Route path="loading" component={ProductLoading}/>
+                <Route path="login" component={ProductLogin}/>
+                <Route path="book" component={ServiceFormIndex}/>
+                <Route path="user" component={User} onEnter={requireUserAuth}/>
+                <Route path="dashboard" component={Dashboard} onEnter={requireUserAuth}/>
+            </Route>
+
+            <Route path="admin" component={AdminPageIndex}>
+                <IndexRedirect to="loading"/>
+                <Route path="loading" component={AdminLoading}/>
+                <Route path="login" component={AdminLogin}/>
+                <Route path="home" component={AdminHome} onEnter={requireAdminAuth}/>
+                <Route path="events" component={AdminEvents} onEnter={requireAdminAuth}/>
+                <Route path="locations" component={AdminLocations} onEnter={requireAdminAuth}/>
+                <Route path="workplaces" component={AdminWorkplaces} onEnter={requireAdminAuth}/>
+                <Route path="services" component={AdminServices} onEnter={requireAdminAuth}/>
+                <Route path="user" component={AdminUser} onEnter={requireAdminAuth}/>
+            </Route>
+        </Route>
+    );
 };
 
-var requireAdminAuth = function(nextState, replace){
-    if(typeof localStorage === 'undefined'){
-        console.log('redirecting to loading from requireAuth()');
-        replace({
-            pathname: '/admin/loading',
-            state: { nextPathname: nextState.location.pathname }
-        })
-    }
-    else if(!localStorage.userToken){
-        console.log('redirecting from requireAuth()');
-        replace({
-            pathname: '/admin/login',
-            state: { nextPathname: nextState.location.pathname }
-        })
-    }
-};
+export default getRoutes;
 
-const routes = (
-    <Route path="/" component={App}>
-        <IndexRoute component={CompanyPageIndex} />
-        <Route path="index" component={CompanyPageIndex} />
 
-        <Route path="app" component={ProductPageIndex}>
-            <IndexRedirect to="loading" />
-            <Route path="loading" component={ProductLoading} />
-            <Route path="login" component={ProductLogin} />
-            <Route path="book" component={ServiceFormIndex} />
-            <Route path="user" component={User} onEnter={requireAuth}/>
-            <Route path="dashboard" component={Dashboard} onEnter={requireAuth}/>
-        </Route>
 
-        <Route path="admin" component={AdminPageIndex}>
-            <IndexRedirect to="loading" />
-            <Route path="loading" component={AdminLoading} />
-            <Route path="login" component={AdminLogin} />
-            <Route path="home" component={AdminHome} onEnter={requireAdminAuth}/>
-            <Route path="events" component={AdminEvents} onEnter={requireAdminAuth}/>
-            <Route path="locations" component={AdminLocations} onEnter={requireAdminAuth}/>
-            <Route path="workplaces" component={AdminWorkplaces} onEnter={requireAdminAuth}/>
-            <Route path="services" component={AdminServices} onEnter={requireAdminAuth}/>
-        </Route>
-    </Route>
-);
 
-export default routes;
+
+

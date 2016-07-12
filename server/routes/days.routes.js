@@ -6,7 +6,8 @@ import jwtCheck from '../util/jwtCheck';
 const router = new Router();
 
 router.route('/days')
-    .post(jwtCheck, requireAdmin, EventController.postDay);
+    .get(EventController.getDays)
+    .post(jwtCheck, requireAdmin, EventController.postDays);
 
 router.route('/days/:id')
     .get(EventController.getDayById)

@@ -37,6 +37,11 @@ const AuthReducer = (state = initialState, action) => {
                 isLoading: false,
                 user: action.user
             }
+        case ActionTypes.AUTH_SET_SNACKBAR_MESSAGE:
+            return {
+                ...state,
+                message: action.message
+            };
         default:
             return state;
     }

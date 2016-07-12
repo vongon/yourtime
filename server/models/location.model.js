@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema(
     {
-        name: String,
-        days: [ Schema.Types.ObjectId ]
+        name: String
     }
 );
 

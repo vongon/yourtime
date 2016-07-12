@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React from 'react';
-import routes from '../shared/routes';
+import getRoutes from '../shared/routes';
 import DevTools from '../shared/container/DevTools/DevTools';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
@@ -11,7 +11,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 const store = configureStore(window.__INITIAL_STATE__);
 const history = syncHistoryWithStore(browserHistory, store);
 const root = document.getElementById('root');
-
+const routes = getRoutes(store);
 let toRender;
 
 

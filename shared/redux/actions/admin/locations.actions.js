@@ -33,53 +33,38 @@ export function adminGetLocations() {
             .get('/api/locations')
             .set('authorization', 'Bearer ' + appState.auth.token)
             .end(function (err, res) {
-                if (err) {
-                    console.warn("Error when querying for locations", err.body);
-                    dispatch(adminLocationsSetLoading(false));
-                    return;
-                }
-                var func_array_locations = [];
-                res.body.map(function (location) {
-                    func_array_locations.push( //array of functions for each location
-                        (pCb_location)=> {
-                            var func_array_days = [];
-                            location.days.map(function (dayId) {
-                                func_array_days.push(
-                                    (pCb_day) => { //array of functions for each day of a location
-                                        request
-                                            .get('/api/days/' + dayId)
-                                            .set('authorization', 'Bearer ' + appState.auth.token)
-                                            .end((err, res)=> {
-                                                if (err) {
-                                                    err.status === 404 ?
-                                                        pCb_day(null, {dayId: dayId}) :
-                                                        pCb_day(err);
-                                                    return
-                                                }
-                                                pCb_day(null, {dayId: dayId, ...res.body});
-                                            });
-                                    }
-                                );
-                            });
-                            parallel(func_array_days, (err, results)=> {
-                                if (err) return pCb_location(err);
-                                pCb_location(null, {...location, days: results});
-                            });
-                        }
-                    );
-                });
-
-                parallel(func_array_locations, (err, results)=> {
                     if (err) {
                         console.warn("Error when querying for locations", err.body);
                         dispatch(adminLocationsSetLoading(false));
                         return;
                     }
-                    console.log('locations queried', results);
-                    dispatch(adminLocationsSetLoading(false));
-                    dispatch(adminLocationsSetLocations(results));
-                });
-            });
+                    var func_array = [];
+                    res.body.map(function (location) {
+                        func_array.push( //array of functions for each location
+                            (pCb)=> {
+                                request
+                                    .get('/api/days/')
+                                    .set('authorization', 'Bearer ' + appState.auth.token)
+                                    .query({location_id: location._id})
+                                    .end((err, res)=> {
+                                        if (err) return pCb(err);
+                                        pCb(null, {...location, days: res.body});
+                                    });
+                            }
+                        );
+                    });
+                    parallel(func_array, (err, results)=> {
+                        if (err) {
+                            console.warn("Error when querying for locations", err.body);
+                            dispatch(adminLocationsSetLoading(false));
+                            return;
+                        }
+                        console.log('locations queried', results);
+                        dispatch(adminLocationsSetLoading(false));
+                        dispatch(adminLocationsSetLocations(results));
+                    });
+                }
+            );
     }
 }
 
@@ -94,16 +79,49 @@ export function adminDeleteLocation(id) {
             .set('authorization', 'Bearer ' + appState.auth.token)
             .end(function (err, res) {
                 if (err) {
-                    console.warn("Error when querying for events", err.body);
+                    console.warn("Error when querying for locations", err.body);
                     dispatch(adminLocationsSetLoading(false));
                     dispatch(adminLocationSetSnackbarMessage('error: ' + err.body));
                     return;
                 }
-                //todo: also delete days that are owned by this location
-                console.log('locations deleted', res.body);
-                dispatch(adminLocationsSetLoading(false));
-                dispatch(adminLocationSetSnackbarMessage('successfully deleted location!'));
-                dispatch(adminGetLocations());
+                //also delete days that are owned by this locations
+                request
+                    .get('/api/days/')
+                    .set('authorization', 'Bearer ' + appState.auth.token)
+                    .query({location_id:id})
+                    .end(function (err, res) {
+                        if(err) {
+                            console.warn("Error when querying for days", err.body);
+                            dispatch(adminLocationsSetLoading(false));
+                            dispatch(adminLocationSetSnackbarMessage('error: ' + err.body));
+                            return;
+                        }
+                        var func_array=[];
+                        res.body.map(function(day){
+                            func_array.push(
+                                (pCb)=>{
+                                    request
+                                        .del('/api/days/'+day._id)
+                                        .set('authorization', 'Bearer ' + appState.auth.token)
+                                        .end(function(err, res){
+                                            if(err) pCb(err);
+                                            pCb(null, res.body);
+                                        });
+                                });
+                        })
+                        parallel(func_array, (err, results)=>{
+                            if(err){
+                                console.warn("Error when deleting for days", err.body);
+                                dispatch(adminLocationsSetLoading(false));
+                                dispatch(adminLocationSetSnackbarMessage('error: ' + err.body));
+                                return;
+                            }
+                            console.log('locations deleted', results);
+                            dispatch(adminLocationsSetLoading(false));
+                            dispatch(adminLocationSetSnackbarMessage('successfully deleted location!'));
+                            dispatch(adminGetLocations());
+                        });
+                    });
             });
     }
 }
