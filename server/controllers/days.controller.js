@@ -13,7 +13,9 @@ var isValid = require('mongoose').Types.ObjectId.isValid;
  */
 export function getDays(req, res){
     var location_id = req.query.location_id;
-        Day.find(location_id ? {location_id: req.query.location_id} : {}, function(err, days){
+    Day.find(location_id ? {location_id: req.query.location_id} : {})
+        .sort({date: 1})
+        .exec(function(err, days){
             if (err) {
                 res.status(500).send({err: 'could not query database'});
                 return console.error(err);

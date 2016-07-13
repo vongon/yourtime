@@ -29,7 +29,8 @@ var Login = React.createClass({
                 signin: {
                     title: "Admin Dashboard Login",
                     emailPlaceholder: "must_be_admin@email.com"
-                }
+                },
+            disableSignupAction: true
             }
         });
     },
