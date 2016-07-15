@@ -13,10 +13,10 @@ const styles = {
     }
 };
 
-var Login = React.createClass({
-    showLogin: function () {
-        this.props.lock.show({
-            callbackURL: this.props.site_domain+'/app/dashboard',
+var SignUp = React.createClass({
+    showLock: function () {
+        this.props.lock.showSignup({
+            callbackURL: this.props.site_domain+'/app/book',
             responseType: 'token',
             authParams: {
                 scope: 'openid nickname email app_metadata'
@@ -25,7 +25,7 @@ var Login = React.createClass({
         });
     },
     componentDidMount: function () {
-        this.showLogin();
+        this.showLock();
     },
     render: function () {
         return (
@@ -33,7 +33,7 @@ var Login = React.createClass({
                 <div className="col-sm-12"
                      style={styles.col}>
                     <div style={styles.auth0_container}
-                        id="auth0-lock-container"></div>
+                         id="auth0-lock-container"></div>
                 </div>
             </div>
         );
@@ -47,5 +47,5 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(SignUp);
 

@@ -2,6 +2,9 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import {connect} from 'react-redux';
+import { setNotListedModal } from '../../../../../../redux/actions/product/serviceform/workplaces.actions';
+
 
 var ModalNotListed = React.createClass({
     propTypes: {
@@ -58,4 +61,23 @@ var ModalNotListed = React.createClass({
     }
 });
 
-export default ModalNotListed;
+ModalNotListed.propTypes = {
+    open: React.PropTypes.bool.isRequired,
+    onRequestClose: React.PropTypes.func.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+    return {
+        open: state.product.serviceform.ui.selectworkplace.showModalNotListed || false
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onRequestClose: ()=>{
+            dispatch(setNotListedModal(false))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalNotListed);

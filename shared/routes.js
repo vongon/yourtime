@@ -3,11 +3,13 @@ import React from 'react';
 import App from './container/App';
 import CompanyPageIndex from './components/companypage/index';
 import ProductPageIndex from './container/product/index';
-import Dashboard from './container/product/dashboard';
-import User from './container/product/user';
-import ProductLoading from './container/product/loading';
-import ProductLogin from './container/product/login';
-import ServiceFormIndex from './container/product/serviceform/index';
+import Dashboard from './container/product/pages/dashboard/dashboard';
+import User from './container/product/pages/user';
+import ProductLoading from './container/product/pages/loading';
+import ProductLogin from './container/product/pages/login';
+import ProductSignup from './container/product/pages/signup';
+import ServiceFormIndex from './container/product/pages/serviceform/serviceform';
+import OverviewIndex from './container/product/pages/serviceform/overview/index';
 import AdminPageIndex from './container/admin/index';
 import AdminLoading from './container/admin/loading';
 import AdminLogin from './container/admin/login';
@@ -72,7 +74,9 @@ var getRoutes = function(store){
                 <IndexRedirect to="loading"/>
                 <Route path="loading" component={ProductLoading}/>
                 <Route path="login" component={ProductLogin}/>
-                <Route path="book" component={ServiceFormIndex}/>
+                <Route path="signup" component={ProductSignup}/>
+                <Route path="book" component={ServiceFormIndex} onEnter={requireUserAuth}/>
+                <Route path="overview" component={OverviewIndex} onEnter={requireUserAuth}/>
                 <Route path="user" component={User} onEnter={requireUserAuth}/>
                 <Route path="dashboard" component={Dashboard} onEnter={requireUserAuth}/>
             </Route>

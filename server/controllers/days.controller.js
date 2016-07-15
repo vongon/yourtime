@@ -10,10 +10,15 @@ var isValid = require('mongoose').Types.ObjectId.isValid;
 /*
  Get Days
  @query.location_id: optional, get days for a specific location
+ @query.future_only: optional bool, get only future days
  */
 export function getDays(req, res){
     var location_id = req.query.location_id;
-    Day.find(location_id ? {location_id: req.query.location_id} : {})
+    var future_only = req.query.future_only;
+    var findObj = {};
+    if(location_id) findObj.location_id = location_id;
+    if(future_only) findObj.date = {$gt: new Date()};
+    Day.find(findObj)
         .sort({date: 1})
         .exec(function(err, days){
             if (err) {

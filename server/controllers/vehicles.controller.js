@@ -1,4 +1,4 @@
-import { Vehicle } from '../models/vehicle.model';
+import {Vehicle} from '../models/vehicle.model';
 var isValid = require('mongoose').Types.ObjectId.isValid;
 
 
@@ -27,6 +27,7 @@ export function postVehicles(req, res) {
     var vehicle = new Vehicle;
     vehicle.user_id = user_id;
     vehicle.edmunds_id = req.body.edmunds_id;
+    if (req.body.name) vehicle.name = req.body.name;
     vehicle.save(function (err, vehicle) {
         if (err) return res.status(500).send({err: 'could not save location object to database'});
         res.send(vehicle);
@@ -36,7 +37,7 @@ export function postVehicles(req, res) {
 /*
  Get vehicle by id
  */
-export function getVehicleById(req, res){
+export function getVehicleById(req, res) {
     var id = req.params.id;
     if (!isValid(id)) return res.status(400).send({err: 'invalid id'});
     Vehicle.findById(id, function (err, vehicle) {
@@ -62,7 +63,8 @@ export function putVehicleById(req, res) {
         if (vehicle.user_id !== user_id) return res.status(404).send({err: 'user must own this vehicle to edit'});
 
         if (req.body.edmunds_id) vehicle.edmunds_id = req.body.edmunds_id;
-
+        if (req.body.name) vehicle.name = req.body.name;
+        
         vehicle.save(function (err, vehicle) {
             if (err) return res.status(500).send({err: 'could not save day object to database'});
             res.send(vehicle);

@@ -8,7 +8,7 @@ import {green500, red500, blue300, indigo900} from 'material-ui/styles/colors';
 import Car from 'material-ui/svg-icons/maps/directions-car';
 import Avatar from 'material-ui/Avatar';
 import moment from 'moment';
-import { dashDeleteEvent } from '../../../redux/actions/dashboard.actions';
+import { dashDeleteEvent } from '../../../../redux/actions/dashboard.actions';
 
 
 

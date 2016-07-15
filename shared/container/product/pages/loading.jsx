@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import { authGetUser } from '../../redux/actions/auth.actions';
+import { authGetUser } from '../../../redux/actions/auth.actions';
 import Paper from 'material-ui/Paper';
-import LoadingSpinner from '../../components/product/loadingspinner';
+import LoadingSpinner from '../../../components/product/loadingspinner';
 
 const styles = {
     paper: {

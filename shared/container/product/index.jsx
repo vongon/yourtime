@@ -2,6 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import NavBar from './navbar';
+import Snackbar from 'material-ui/Snackbar';
+import {setSnackbarMessage} from '../../redux/actions/product/global.actions';
  
 
 var Index = React.createClass({
@@ -34,6 +36,12 @@ var Index = React.createClass({
                 />
                 <NavBar/>
                 {this.props.children}
+                <Snackbar
+                    open={this.props.message !== ''}
+                    message={this.props.message}
+                    autoHideDuration={4000}
+                    onRequestClose={this.props.clearMessage}
+                />
             </div>
         );
     }
@@ -41,16 +49,16 @@ var Index = React.createClass({
 
 function mapStateToProps(state, ownProps){
     return {
-        lock: state.auth.lock,
-        isLoading: state.auth.isLoading,
-        nextRoute: ownProps.routes[2].path,
-        user: state.auth.user,
-        tokenId: state.auth.tokenId
+        message: state.product.global.message || ''
     };
 }
 
 function mapDispatchToProps(dispatch){
-    return {}
+    return {
+        clearMessage: () => {
+            dispatch(setSnackbarMessage(''));
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

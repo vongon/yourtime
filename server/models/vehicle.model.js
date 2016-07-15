@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var schema = new Schema(
     {
         user_id: String, //Auth0 id, not mongodb id
-        edmunds_id: String //Edmunds id, not mongodb id
+        edmunds_id: String, //Edmunds id, not mongodb id
+        name: String //display name
     }
 );
 
