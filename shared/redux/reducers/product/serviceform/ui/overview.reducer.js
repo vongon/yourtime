@@ -2,8 +2,23 @@ import * as ActionTypes from '../../../../constants/constants';
 
 
 
-const SelectDateReducer =  (state = {}, action) => {
+const OverviewReducer =  (state = {}, action) => {
     switch(action.type){
+        case ActionTypes.PRODUCT_OVERVIEW_SET_LOADING:
+            return {
+                ...state,
+                isLoading: action.bool
+            };
+        case ActionTypes.PRODUCT_OVERVIEW_SET_SUBMIT_LOADING:
+            return {
+                ...state,
+                submitIsLoading: action.bool
+            };
+        case ActionTypes.PRODUCT_OVERVIEW_SET_SUBMIT_SUCCESS:
+            return {
+                ...state,
+                submitSuccess: action.bool
+            };
         case ActionTypes.PRODUCT_OVERVIEW_SET_WORKPLACE_NAME:
             return {
                 ...state,
@@ -34,4 +49,4 @@ const SelectDateReducer =  (state = {}, action) => {
     }
 };
 
-export default SelectDateReducer;
+export default OverviewReducer;

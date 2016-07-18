@@ -25,6 +25,9 @@ const styles = {
     rowSelected: {
         backgroundColor: '#EEE'
     },
+    rowDisabled: {
+        color: '#AAA'
+    },
     tbody: {},
     table: {},
     tableContainer:{
@@ -81,23 +84,44 @@ var SelectDate = React.createClass({
                                         </tr>
                                     </thead>
                                     <tbody style={styles.tbody}>
-                                    {this.props.availableDates.map(function(day){
-                                        if(day.location_id !== location_id) return null;
-                                        return <tr key={day._id}
-                                                   style={self.props.date === day.date ? styles.rowSelected : styles.row}
-                                                    onClick={()=>{self.selectHandler(day.date)}}>
-                                            <td style={styles.cell}>
-                                                <FlatButton
-                                                    primary={true}
-                                                    icon={<ContentAdd/>}
-                                                    style={styles.addButton}
-                                                    onTapTouch={()=>{self.selectHandler(day.date)}}
-                                                />
-                                            </td>
-                                            <td style={styles.cell}>{moment(day.date).format('dddd [-] ll') || 'null'}</td>
-                                            <td style={styles.cell}>{day.capacity-day.eventCount>0 ? day.capacity-day.eventCount : 'full'}</td>
-                                        </tr>
-                                    })}
+                                    {this.props.availableDates.map(
+                                        function(day){
+                                            if(day.location_id !== location_id) return null;
+
+                                            var rowStyle, spotsLeft, buttonDisabled, clickHandler;
+                                            rowStyle = styles.row;
+                                            spotsLeft = day.capacity-day.eventCount;
+                                            buttonDisabled = false;
+                                            clickHandler = ()=>{self.selectHandler(day.date)};
+
+                                            if(day.eventCount >= day.capacity){
+                                                //day sold out
+                                                rowStyle = styles.rowDisabled;
+                                                spotsLeft = 'Sold Out';
+                                                buttonDisabled = true;
+                                                clickHandler = ()=>{};
+                                            } else if(self.props.date === day.date){
+                                                //day is currently selected
+                                                rowStyle = styles.rowSelected;
+                                            }
+
+                                            return <tr key={day._id}
+                                                       style={rowStyle}
+                                                        onClick={clickHandler}>
+                                                <td style={styles.cell}>
+                                                    <FlatButton
+                                                        primary={true}
+                                                        icon={<ContentAdd/>}
+                                                        style={styles.addButton}
+                                                        onTapTouch={clickHandler}
+                                                        disabled={buttonDisabled}
+                                                    />
+                                                </td>
+                                                <td style={styles.cell}>{moment(day.date).format('dddd [-] ll') || 'null'}</td>
+                                                <td style={styles.cell}>{spotsLeft}</td>
+                                            </tr>
+                                        }
+                                    )}
                                     </tbody>
                                 </table>
                             </div>

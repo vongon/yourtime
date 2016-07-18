@@ -6,7 +6,21 @@ import async from 'async';
 
 export function setLoading(bool) {
     return {
-        type: ActionTypes.PRODUCT_FORM_OVERVIEW_SET_LOADING,
+        type: ActionTypes.PRODUCT_OVERVIEW_SET_LOADING,
+        bool: bool
+    };
+}
+
+export function setSubmitLoading(bool) {
+    return {
+        type: ActionTypes.PRODUCT_OVERVIEW_SET_SUBMIT_LOADING,
+        bool: bool
+    }
+}
+
+export function setSubmitSuccess(bool){
+    return {
+        type: ActionTypes.PRODUCT_OVERVIEW_SET_SUBMIT_SUCCESS,
         bool: bool
     };
 }
@@ -104,5 +118,26 @@ export function getData() {
             dispatch(setServicesObjects(results.services_objects));
             dispatch(setLoading(false));
         });
+    }
+}
+
+export function submitServiceformBody() {
+    return (dispatch, getState) => {
+        dispatch(setSubmitLoading(true));
+        var appState = getState();
+        var eventBody = appState.product.serviceform.body;
+        request
+            .post('/api/events/')
+            .set('authorization', 'Bearer '+ appState.auth.token)
+            .send(eventBody)
+            .end((err, res)=>{
+                if(err){
+                    dispatch(setSnackbarMessage('error: '+err.body));
+                    dispatch(setSubmitLoading(false));
+                    return;
+                }
+                dispatch(setSubmitLoading(false));
+                dispatch(setSubmitSuccess(true));
+            });
     }
 }

@@ -14,6 +14,7 @@ var schema = new Schema(
 );
 
 schema.method('getEventCount',function(mCb){
+    var self = this;
     Workplace.find({location_id: this.location_id},
         function(err, workplaces){
             if(err) return mCb(err);
@@ -23,7 +24,11 @@ schema.method('getEventCount',function(mCb){
                 var workplace = workplaces[i];
                 func_array.push(
                     (pCb) => {
-                        Event.find({workplace_id: workplace._id},
+                        var findObj = {
+                            workplace_id: workplace._id,
+                            date: self.date
+                        };
+                        Event.find(findObj,
                             (err, events)=>{
                                 if(err) return pCb(err);
                                 pCb(null, events.length);

@@ -9,7 +9,8 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import LoadingSpinner from '../../../../../components/product/loadingspinner';
 import {Link} from 'react-router';
-import { getData, setDiscountCode } from '../../../../../redux/actions/product/serviceform/overview.actions';
+import { getData, setDiscountCode, submitServiceformBody } from '../../../../../redux/actions/product/serviceform/overview.actions';
+import SubmitSuccess from './submitsuccess';
 import moment from 'moment';
 
 const styles = {
@@ -48,6 +49,9 @@ var Overview = React.createClass({
     render: function () {
         if (this.props.isLoading) {
             return (<div className="row"><div className="col-sm-12"><Paper style={styles.paper}><LoadingSpinner/></Paper></div></div>);
+        }
+        if (this.props.submitSuccess){
+            return (<SubmitSuccess/>)
         }
         var total = this.getTotal();
         return (
@@ -195,8 +199,10 @@ var Overview = React.createClass({
                             <RaisedButton
                                 style={styles.button}
                                 primary={true}
-                                label="Order & Pay"
-                                icon={<DoneIcon/>}
+                                label={this.props.submitIsLoading ? "Submitting...":"Order & Pay"}
+                                icon={this.props.submitIsLoading ? null : <DoneIcon/>}
+                                onTouchTap={this.props.submit}
+                                disabled={this.props.submitIsLoading}
                             />
                         </div>
                     </Paper>
@@ -210,19 +216,25 @@ var Overview = React.createClass({
 Overview.propTypes = {
     lock: React.PropTypes.object.isRequired,
     isLoading: React.PropTypes.bool.isRequired,
-    getData: React.PropTypes.func.isRequired,
+    submitIsLoading: React.PropTypes.bool.isRequired,
+    submitSuccess: React.PropTypes.bool.isRequired,
     workplace_name: React.PropTypes.string,
     vehicle_name: React.PropTypes.string,
     date: React.PropTypes.string,
     services_objects: React.PropTypes.array.isRequired,
-    discount_code: React.PropTypes.string.isRequired
+    discount_code: React.PropTypes.string.isRequired,
 
+    getData: React.PropTypes.func.isRequired,
+    setDiscountCode: React.PropTypes.func.isRequired,
+    submit: React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     return {
         lock: state.auth.lock,
         isLoading: state.product.serviceform.ui.overview.isLoading || false,
+        submitIsLoading: state.product.serviceform.ui.overview.submitIsLoading || false,
+        submitSuccess: state.product.serviceform.ui.overview.submitSuccess || false,
         workplace_name: state.product.serviceform.ui.overview.workplace_name || null,
         vehicle_name: state.product.serviceform.ui.overview.vehicle_name || null,
         date: state.product.serviceform.ui.overview.date || null,
@@ -238,6 +250,9 @@ function mapDispatchToProps(dispatch) {
         },
         setDiscountCode: (discount_code)=>{
             dispatch(setDiscountCode(discount_code));
+        },
+        submit: ()=>{
+            dispatch(submitServiceformBody());
         }
     }
 }

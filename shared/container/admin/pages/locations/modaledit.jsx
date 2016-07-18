@@ -142,6 +142,7 @@ var ModalEdit = React.createClass({
                                     <tr>
                                         <th><h5>Date</h5></th>
                                         <th><h5>Spots Left</h5></th>
+                                        <th><h5>Events Booked</h5></th>
                                         <th><h5>Capacity</h5></th>
                                         <th><h5></h5></th>
                                         <th><h5></h5></th>
@@ -153,7 +154,8 @@ var ModalEdit = React.createClass({
                                         if (timeDiff < 0) return;
                                         return <tr key={day._id}>
                                             <td>{moment(day.date).format('dddd [-] ll') || 'null'}</td>
-                                            <td>{day.capacity-day.eventCount>0 ? day.capacity-day.eventCount : 'full'}</td>
+                                            <td>{day.capacity-day.eventCount}</td>
+                                            <td>{day.eventCount || 'null'}</td>
                                             <td>{day.capacity || 'null'}</td>
                                             <td>
                                                 <button
@@ -175,6 +177,7 @@ var ModalEdit = React.createClass({
                                     <tr>
                                         <th><h5>Date</h5></th>
                                         <th><h5>Spots Left</h5></th>
+                                        <th><h5>Events Booked</h5></th>
                                         <th><h5>Capacity</h5></th>
                                         <th><h5></h5></th>
                                         <th><h5></h5></th>
@@ -186,7 +189,8 @@ var ModalEdit = React.createClass({
                                         if (timeDiff > 0) return;
                                         return <tr key={day._id}>
                                             <td>{moment(day.date).format('dddd [-] ll') || 'null'}</td>
-                                            <td>{day.capacity-day.eventCount>0 ? day.capacity-day.eventCount : 'full'}</td>
+                                            <td>{day.capacity-day.eventCount}</td>
+                                            <td>{day.eventCount || 'null'}</td>
                                             <td>{day.capacity || 'null'}</td>
                                             <td>
                                                 <button
