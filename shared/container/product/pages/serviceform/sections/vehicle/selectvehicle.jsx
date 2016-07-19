@@ -4,7 +4,8 @@ import Paper from 'material-ui/Paper';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import LoadingSpinner from '../../../../../../components/product/loadingspinner';
-import {getAvailableVehicles, setVehicleId} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
+import {getAvailableVehicles, setVehicleId, setShowCreateView} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
+import CreateVehicle from './createvehicle';
 
 const styles = {
     paper: {
@@ -21,17 +22,12 @@ const styles = {
 }
 
 var SelectVehicle = React.createClass({
-    getInitialState: function () {
-        return {
-            showCreateView: false
-        }
-    },
     componentDidMount: function () {
         this.props.getAvailableVehicles();
     },
     handleChange: function (e, index, selected_value) {
         if (selected_value === 'create') {
-            this.setState({showCreateView: true});
+            this.props.setShowCreateView(true);
             return;
         }
         this.props.setVehicleId(selected_value);
@@ -55,6 +51,7 @@ var SelectVehicle = React.createClass({
                                 <SelectField
                                     value={this.props.vehicle_id}
                                     onChange={this.handleChange}
+                                    fullWidth={true}
                                     style={styles.selectField}
                                 >
                                     <MenuItem value={''} primaryText="Select A Vehicle" disabled={true}/>
@@ -65,6 +62,9 @@ var SelectVehicle = React.createClass({
                                     <MenuItem value={'create'} primaryText="Create a new vehicle"/>
                                 </SelectField>
                             </div>
+                            <CreateVehicle
+                                visible={this.props.showCreateView}
+                            />
                         </div>
                     </Paper>
                 </div>
@@ -77,7 +77,12 @@ SelectVehicle.propTypes = {
     isLoading: React.PropTypes.bool.isRequired,
     visible: React.PropTypes.bool.isRequired,
     availableVehicles: React.PropTypes.array.isRequired,
-    vehicle_id: React.PropTypes.string.isRequired
+    vehicle_id: React.PropTypes.string.isRequired,
+    showCreateView: React.PropTypes.bool.isRequired,
+
+    getAvailableVehicles: React.PropTypes.func.isRequired,
+    setVehicleId: React.PropTypes.func.isRequired,
+    setShowCreateView: React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -85,7 +90,8 @@ function mapStateToProps(state, ownProps) {
         isLoading: state.product.serviceform.ui.selectvehicle.isLoading || false,
         visible: ownProps.visible,
         availableVehicles: state.product.serviceform.ui.selectvehicle.availableVehicles || [],
-        vehicle_id: state.product.serviceform.body.vehicle_id || ''
+        vehicle_id: state.product.serviceform.body.vehicle_id || '',
+        showCreateView: state.product.serviceform.ui.selectvehicle.showCreateView || false
     }
 }
 
@@ -96,6 +102,9 @@ function mapDispatchToProps(dispatch) {
         },
         setVehicleId: (id)=> {
             dispatch(setVehicleId(id));
+        },
+        setShowCreateView: (bool)=>{
+            dispatch(setShowCreateView(bool));
         }
     }
 }
