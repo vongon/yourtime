@@ -50,7 +50,7 @@ var AutoPanel = React.createClass({
     getInitialState: function () {
         return {
             deleteRequested: false,
-            isLoading: false,
+            isLoading: true,
             asyncError: false,
             event: this.props.event
         };
@@ -188,7 +188,7 @@ var AutoPanel = React.createClass({
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {event.services_objects.map(
+                                            {(event.services_objects||[]).map(
                                                 (service)=>{
                                                     return <tr key={service._id}>
                                                         <td style={styles.td}>{service.name}</td>
