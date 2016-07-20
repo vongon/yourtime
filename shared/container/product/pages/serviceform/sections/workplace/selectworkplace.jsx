@@ -12,6 +12,8 @@ import {
 import {setDate} from '../../../../../../redux/actions/product/serviceform/dates.actions';
 import {setServices} from '../../../../../../redux/actions/product/serviceform/services.actions';
 import ModalNotListed from './modalnotlisted';
+import CheckCircle from 'material-ui/svg-icons/action/check-circle';
+import {greenA400} from 'material-ui/styles/colors';
 
 const styles = {
     paper: {
@@ -51,7 +53,7 @@ var SelectWorkplace = React.createClass({
                 <div className="col-sm-12">
                     <Paper style={styles.paper}>
                         <div className="container-fluid">
-                            <h4>Select your workplace</h4>
+                            <h4>Select your workplace {this.props.workplace_id !== '' ? <CheckCircle style={{fill:greenA400}}/>: ''}</h4>
                             <div style={styles.selectFieldContainer}>
                                 <SelectField
                                     value={this.props.workplace_id}

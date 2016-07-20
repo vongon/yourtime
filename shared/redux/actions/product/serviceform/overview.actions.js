@@ -60,62 +60,76 @@ export function setDiscountCode(discount_code){
     };
 }
 
+export function asyncGetEventData(event, done){
+    async.parallel({
+        workplace_name: (pCb)=>{
+            request
+                .get('/api/workplaces/'+event.workplace_id)
+                .end((err,res)=>{
+                    if(err){
+                        if(err.status === 404) return pCb(null, 'null');
+                        return pCb(err);
+                    }
+                    pCb(null, res.body.name);
+                });
+        },
+        vehicle_name: (pCb)=>{
+            request
+                .get('/api/vehicles/'+event.vehicle_id)
+                .end((err,res)=>{
+                    if(err){
+                        if(err.status === 404) return pCb(null, 'null');
+                        return pCb(err);
+                    }
+                    pCb(null, res.body.name);
+                });
+        },
+        services_objects: (pCb)=>{
+            var service_ids = event.services;
+            async.map(service_ids,
+                (id, mCb)=>{
+                    request
+                        .get('/api/services/'+id)
+                        .end((err,res)=>{
+                            if(err){
+                                if(err.status === 404) return mCb(null, 'null');
+                                return mCb(err);
+                            }
+                            mCb(null, res.body);
+                        });
+                },
+                (err, results)=>{
+                    if(err) return pCb(err);
+                    pCb(null, results);
+                });
+        }
+    },(err, results)=>{
+        if(err){
+            return done(err);
+        }
+        event.vehicle_name = results.vehicle_name;
+        event.workplace_name = results.workplace_name;
+        event.services_objects = results.services_objects;
+        done(null, event);
+    });
+}
+
 export function getData() {
     return (dispatch, getState) => {
         dispatch(setLoading(true));
         var appState = getState();
-        async.parallel({
-            workplace_name: (pCb)=>{
-                request
-                    .get('/api/workplaces/'+appState.product.serviceform.body.workplace_id)
-                    .end((err,res)=>{
-                        if(err){
-                            if(err.status === 404) return pCb(null, 'null');
-                            return pCb(err);
-                        }
-                        pCb(null, res.body.name);
-                    });
-            },
-            vehicle_name: (pCb)=>{
-                request
-                    .get('/api/vehicles/'+appState.product.serviceform.body.vehicle_id)
-                    .end((err,res)=>{
-                        if(err){
-                            if(err.status === 404) return pCb(null, 'null');
-                            return pCb(err);
-                        }
-                        pCb(null, res.body.name);
-                    });
-            },
-            services_objects: (pCb)=>{
-                var service_ids = appState.product.serviceform.body.services;
-                async.map(service_ids,
-                    (id, mCb)=>{
-                        request
-                            .get('/api/services/'+id)
-                            .end((err,res)=>{
-                                if(err){
-                                    if(err.status === 404) return mCb(null, 'null');
-                                    return mCb(err);
-                                }
-                                mCb(null, res.body);
-                            });
-                    },
-                    (err, results)=>{
-                        if(err) return pCb(err);
-                        pCb(null, results);
-                    });
-            }
-        },(err, results)=>{
+        var event = appState.product.serviceform.body;
+
+        asyncGetEventData(event,(err, event)=>{
             if(err){
-                dispatch(setSnackbarMessage('error: '+err.body));
+                dispatch(setSnackbarMessage('error trying to get event data'));
                 dispatch(setLoading(false));
                 return;
             }
-            dispatch(setDate(appState.product.serviceform.body.date));
-            dispatch(setWorkplaceName(results.workplace_name));
-            dispatch(setVehicleName(results.vehicle_name));
-            dispatch(setServicesObjects(results.services_objects));
+            dispatch(setDate(event.date));
+            dispatch(setWorkplaceName(event.workplace_name));
+            dispatch(setVehicleName(event.vehicle_name));
+            dispatch(setServicesObjects(event.services_objects));
             dispatch(setLoading(false));
         });
     }

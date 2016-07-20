@@ -53,7 +53,6 @@ var Overview = React.createClass({
         if (this.props.submitSuccess){
             return (<SubmitSuccess/>)
         }
-        var total = this.getTotal();
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -183,7 +182,7 @@ var Overview = React.createClass({
                                         </tr>
                                         <tr>
                                             <td style={styles.td}><h5>TOTAL:</h5></td>
-                                            <td style={styles.td}>{'$ '+total}</td>
+                                            <td style={styles.td}>{'$ '+this.getTotal()}</td>
                                         </tr>
                                         </tbody>
                                     </table>

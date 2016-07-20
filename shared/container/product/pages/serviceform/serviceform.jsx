@@ -12,7 +12,6 @@ import { resetServiceForm } from '../../../../redux/actions/product/global.actio
 
 var ServiceFormIndex = React.createClass({
     render: function () {
-        console.log('this.props.date:', this.props.date);
         return (
             <div>
                 <h3

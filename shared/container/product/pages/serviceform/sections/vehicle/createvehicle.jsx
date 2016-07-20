@@ -7,15 +7,10 @@ import MakesTab from './tabs/makes';
 import ModelsTab from './tabs/models';
 import YearsTab from './tabs/years';
 import StylesTab from './tabs/styles';
+import AddIcon from 'material-ui/svg-icons/content/add'
 
 
 const styles = {
-    mainHeader: {
-        marginTop: 0
-    },
-    selectHeader: {
-        marginTop: 20
-    },
     buttonsCol: {
         textAlign: 'center'
     },
@@ -26,9 +21,14 @@ const styles = {
     },
     tabs: {
         borderRadius: 5,
-        overflow: 'hidden',
-        border: '1px solid #ccc',
-        backgroundColor: '#f8f8f8'
+        overflow: 'hidden'
+    },
+    tabItemContainer: {
+        backgroundColor: '#eee',
+        color: '#333'
+    },
+    tabHeader:{
+        color: '#333'
     }
 };
 
@@ -46,18 +46,16 @@ var CreateVehicle = React.createClass({
         }
         return (
             <div className="">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h4 style={styles.mainHeader}>New Vehicle</h4>
-                    </div>
-                </div>
-
                 <Tabs
                     style={styles.tabs}
+                    tabItemContainerStyle={styles.tabItemContainer}
                     value={this.props.tabValue}
                     onChange={this.onTabChange}
                 >
-                    <Tab label={this.props.selectedMake || "(Make)"} value="make">
+                    <Tab label={this.props.selectedMake || "(Make)"}
+                         value="make"
+                        style={styles.tabHeader}
+                    >
                         <MakesTab
                             availableMakes={this.props.availableMakes}
                         />
@@ -65,18 +63,21 @@ var CreateVehicle = React.createClass({
 
                     <Tab label={this.props.selectedModel || "(Model)"}
                          value="model"
+                         style={styles.tabHeader}
                     >
                         <ModelsTab />
                     </Tab>
                     <Tab
                         label={this.props.selectedYear || "(Year)"}
                         value="year"
+                        style={styles.tabHeader}
                     >
                         <YearsTab />
                     </Tab>
                     <Tab
                         label={this.props.selectedStyle || "(Style)"}
                         value="style"
+                        style={styles.tabHeader}
                     >
                         <StylesTab/>
                     </Tab>
@@ -89,12 +90,13 @@ var CreateVehicle = React.createClass({
                     >
                         <RaisedButton
                             style={styles.buttons}
-                            label="Cancel"
+                            label="Close"
                             onTouchTap={this.props.closeCreateView}
                         />
                         <RaisedButton
+                            icon={<AddIcon/>}
                             style={styles.buttons}
-                            label="+ Add Vehicle"
+                            label="Add Vehicle"
                             disabled={this.props.newVehicle ? false : true}
                             primary={true}
                             onTouchTap={this.props.postNewVehicle}

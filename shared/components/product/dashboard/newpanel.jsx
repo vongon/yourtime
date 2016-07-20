@@ -2,10 +2,12 @@ import React from 'react';
 import {Link} from 'react-router';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
 
 const styles = {
-    paper: {
+    button: {
         marginBottom: 20,
     },
     icon: {
@@ -24,20 +26,12 @@ var NewPanel = React.createClass({
             <div className="row">
                 <div className="col-sm-6">
                     <Link to="/app/book">
-                        <Paper
-                            style={styles.paper}
-                            zDepth={this.state.hover ? 3 : 1}
-                            onMouseEnter={()=>{this.setState({hover: true})}}
-                            onMouseLeave={()=>{this.setState({hover: false})}}>
-                            <div className="container-fluid">
-                                <h4 style={{}}>
-                                    <i className="fa fa-plus-circle"
-                                       aria-hidden="true"
-                                       style={styles.icon}/>
-                                    Add New Service
-                                </h4>
-                            </div>
-                        </Paper>
+                        <RaisedButton
+                            style={styles.button}
+                            primary={true}
+                            label={'Add New Event'}
+                            icon={<AddCircle/>}
+                        />
                     </Link>
                 </div>
             </div>

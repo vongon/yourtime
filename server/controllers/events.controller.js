@@ -6,6 +6,7 @@ var populateEvent = function(event, req, done){
     if(req.body.workplace_id) event.workplace_id = req.body.workplace_id;
     if(req.body.vehicle_id) event.vehicle_id = req.body.vehicle_id;
     if(req.body.date) event.date = req.body.date;
+    event.status = req.body.status || 'pending';
     if(req.body.services) {
         var count = 0;
         var errorDetected = false;
@@ -58,7 +59,8 @@ export function getEvents(req, res) {
  workplace_id: (required) Schema.Types.ObjectId,
  vehicle_id: (required) Schema.Types.ObjectId,
  services: (required) [ Schema.Types.ObjectId ],
- date: Date
+ date: (required) Date,
+ status: (optional) enum ["pending","complete"], will default to "pending" if not provided
 
  */
 export function postEvents(req, res) {

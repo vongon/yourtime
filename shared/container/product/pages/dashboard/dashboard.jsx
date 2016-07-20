@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import AutoPanel from './autopanel';
 import NewPanel from '../../../../components/product/dashboard/newpanel';
 import Divider from 'material-ui/Divider';
-import {dashGetEvents} from '../../../../redux/actions/dashboard.actions';
+import {dashGetEvents} from '../../../../redux/actions/product/dashboard.actions';
 import Paper from 'material-ui/Paper';
 import LoadingSpinner from '../../../../components/product/loadingspinner';
 
@@ -13,7 +13,6 @@ import LoadingSpinner from '../../../../components/product/loadingspinner';
 
 var Dashboard = React.createClass({
     componentDidMount: function(){
-        console.log('dash mounted');
         this.props.getEvents();
     },
     render: function () {
@@ -22,10 +21,10 @@ var Dashboard = React.createClass({
         }
         return (
             <div>
-                <h2 className="dashboard-title">My Services</h2>
+                <h3 className="dashboard-title">MY EVENTS</h3>
                 <NewPanel />
                 {this.props.events.map(function(event){
-                    return <AutoPanel key={event._id}/>
+                    return <AutoPanel key={event._id} event={event}/>
                 })}
                 <Divider style={{marginTop: 20, marginBottom:20}}/>
             </div>

@@ -6,6 +6,8 @@ import {getAvailableDates, setDate} from '../../../../../../redux/actions/produc
 import moment from 'moment';
 import ContentAdd from 'material-ui/svg-icons/content/add-circle';
 import FlatButton from 'material-ui/FlatButton';
+import CheckCircle from 'material-ui/svg-icons/action/check-circle';
+import {greenA400} from 'material-ui/styles/colors';
 
 const styles = {
     paper: {
@@ -71,7 +73,7 @@ var SelectDate = React.createClass({
                 <div className="col-sm-12">
                     <Paper style={styles.paper}>
                         <div className="container-fluid">
-                            <h4>Select a date</h4>
+                            <h4>Select a date {this.props.date !== '' ? <CheckCircle style={{fill:greenA400}}/>: ''}</h4>
                             <p style={{color:'#AAA'}}>{this.props.date !== '' ? moment(this.props.date).format('[Selected:] dddd [-] ll') : ''}</p>
                             <div className="table-responsive" style={styles.tableContainer}>
                                 <table className="table table-condensed table-hover"

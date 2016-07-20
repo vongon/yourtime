@@ -7,7 +7,8 @@ var schema = new Schema(
         workplace_id: Schema.Types.ObjectId,
         vehicle_id: Schema.Types.ObjectId,
         services: [ Schema.Types.ObjectId ],
-        date: Date
+        date: Date,
+        status: {type: String, enum: ['pending','complete']}
     }
 );
 

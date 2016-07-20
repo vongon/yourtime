@@ -6,6 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import LoadingSpinner from '../../../../../../components/product/loadingspinner';
 import {getAvailableVehicles, setVehicleId, setShowCreateView} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
 import CreateVehicle from './createvehicle';
+import CheckCircle from 'material-ui/svg-icons/action/check-circle';
+import {greenA400} from 'material-ui/styles/colors';
 
 const styles = {
     paper: {
@@ -46,22 +48,24 @@ var SelectVehicle = React.createClass({
                 <div className="col-sm-12">
                     <Paper style={styles.paper}>
                         <div className="container-fluid">
-                            <h4>Select a vehicle</h4>
-                            <div style={styles.selectFieldContainer}>
-                                <SelectField
-                                    value={this.props.vehicle_id}
-                                    onChange={this.handleChange}
-                                    fullWidth={true}
-                                    style={styles.selectField}
-                                >
-                                    <MenuItem value={''} primaryText="Select A Vehicle" disabled={true}/>
-                                    {this.props.availableVehicles.map(function (vehicle) {
-                                        return <MenuItem key={vehicle._id} value={vehicle._id}
-                                                         primaryText={vehicle.name}/>
-                                    })}
-                                    <MenuItem value={'create'} primaryText="Create a new vehicle"/>
-                                </SelectField>
-                            </div>
+                            <h4>Select a vehicle {this.props.vehicle_id !== '' ? <CheckCircle style={{fill:greenA400}}/>: ''}</h4>
+                            {this.props.showCreateView ? null :
+                                <div style={styles.selectFieldContainer}>
+                                    <SelectField
+                                        value={this.props.vehicle_id}
+                                        onChange={this.handleChange}
+                                        fullWidth={true}
+                                        style={styles.selectField}
+                                    >
+                                        <MenuItem value={''} primaryText="Select A Vehicle" disabled={true}/>
+                                        {this.props.availableVehicles.map(function (vehicle) {
+                                            return <MenuItem key={vehicle._id} value={vehicle._id}
+                                                             primaryText={vehicle.name}/>
+                                        })}
+                                        <MenuItem value={'create'} primaryText="Create a new vehicle"/>
+                                    </SelectField>
+                                </div>
+                            }
                             <CreateVehicle
                                 visible={this.props.showCreateView}
                             />
@@ -104,6 +108,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(setVehicleId(id));
         },
         setShowCreateView: (bool)=>{
+            dispatch(setVehicleId(null));
             dispatch(setShowCreateView(bool));
         }
     }

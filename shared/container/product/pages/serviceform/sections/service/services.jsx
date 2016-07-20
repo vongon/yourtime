@@ -18,9 +18,6 @@ var Services = React.createClass({
         console.log('add new service');
         this.props.addServiceId('');
     },
-    componentDidMount: function(){
-        //this.props.addServiceId(''); //initialize for first service selector
-    },
     render: function () {
         if (!this.props.visible) {
             return null;

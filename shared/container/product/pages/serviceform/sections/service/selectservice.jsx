@@ -7,10 +7,13 @@ import {
     removeServiceIdByIndex,
     setServiceIdByIndex
 } from '../../../../../../redux/actions/product/serviceform/services.actions';
-import dots from 'dots';
 import IconButton from 'material-ui/IconButton'
-import RemoveCircle from 'material-ui/svg-icons/content/remove-circle'
-import {red200} from 'material-ui/styles/colors';
+import RemoveIcon from 'material-ui/svg-icons/action/delete'
+import {red200, greenA400} from 'material-ui/styles/colors';
+import ServiceTabs from './servicetabs';
+import FlatButton from 'material-ui/FlatButton';
+import CheckCircle from 'material-ui/svg-icons/action/check-circle';
+
 
 const styles = {
     paper: {
@@ -30,13 +33,11 @@ const styles = {
             textAlign: 'right'
         },
         button: {
-            margin: 0,
-            padding: 0,
-            width: 24,
-            height: 24
+            minWidth: 40
         },
         icon: {
-            fill: red200
+            fill: '#aaa',
+            color: '#aaa'
         }
     }
 }
@@ -45,8 +46,7 @@ var SelectService = React.createClass({
     componentDidMount: function () {
         this.props.getAvailableServices();
     },
-    removeHandler: function(){
-        console.log('remove');
+    removeHandler: function () {
         this.props.removeService(this.props.idx);
     },
     selectHandler: function (service) {
@@ -63,7 +63,6 @@ var SelectService = React.createClass({
         }
         var selected_workplace_id = this.props.selected_workplace_id;
         var selected_service_id = this.props.selected_service_id;
-        var self = this;
         return (
             <div className="row">
                 <div className="col-sm-12">
@@ -71,48 +70,34 @@ var SelectService = React.createClass({
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-xs-10">
-                                    <h4>Select a service</h4>
+                                    <h4>Select a service {selected_service_id !== '' ? <CheckCircle style={{fill:greenA400}}/>: ''}</h4>
                                 </div>
                                 <div className="col-xs-2"
                                      style={styles.removeButton.col}>
-                                    <IconButton
+                                    <FlatButton
                                         style={styles.removeButton.button}
-                                        iconStyle={styles.removeButton.icon}
-                                        onTouchTap={this.removeHandler}>
-                                        <RemoveCircle/>
-                                    </IconButton>
+                                        onTouchTap={this.removeHandler}
+                                        icon={<RemoveIcon color={'#aaa'}/>}>
+                                    </FlatButton>
                                 </div>
                             </div>
-                            <div className="table-responsive">
-                                <table className="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th><h5>Name</h5></th>
-                                        <th><h5>Category</h5></th>
-                                        <th><h5>Description</h5></th>
-                                        <th><h5>Price</h5></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.props.availableServices.map(function (service) {
-                                        if (service.workplace_id !== selected_workplace_id) {
-                                            return null;
-                                        }
-                                        console.log('selected id:', selected_service_id);
-                                        console.log('service id:', service._id);
-                                        return <tr
-                                            style={selected_service_id === service._id ? styles.selectedRow : styles.row}
-                                            onClick={()=>{self.selectHandler(service)}}
-                                            key={service._id}>
-                                            <td>{service.name}</td>
-                                            <td>{service.category}</td>
-                                            <td>{dots(service.description, 14)}</td>
-                                            <td>{'$ ' + service.price}</td>
-                                        </tr>
-                                    })}
-                                    </tbody>
-                                </table>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <ServiceTabs
+                                        serviceId={selected_service_id}
+                                        setServiceId={(id)=>{this.props.setServiceIdByIndex(this.props.idx, id)}}
+                                        availableServices={this.props.availableServices.filter(
+                                            (service)=>{
+                                                return service.workplace_id === selected_workplace_id;
+                                            }
+                                        )}
+                                    />
+                                </div>
                             </div>
+                            {selected_service_id !== '' ?
+                                <FlatButton label="reset" onTouchTap={()=>{this.selectHandler('')}}/> :
+                                ''
+                            }
                         </div>
                     </Paper>
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Divider from 'material-ui/Divider';
-import {dashGetEvents} from '../../../redux/actions/dashboard.actions';
+import {dashGetEvents} from '../../../redux/actions/product/dashboard.actions';
 import Paper from 'material-ui/Paper';
 import LoadingSpinner from '../../../components/product/loadingspinner';
 
