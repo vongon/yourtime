@@ -9,10 +9,10 @@ var NavBar = React.createClass({
             $('.navbar-toggle:visible').click();
         });
 
-        window.addEventListener("scroll", this.scrollListener);
+        //window.addEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
     },
     componentWillUnmount: function(){
-        window.removeEventListener("scroll", this.scrollListener);
+        //window.removeEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
     },
     scrollListener: function(){
         var checkScrolling = function() {

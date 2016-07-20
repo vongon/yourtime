@@ -16,7 +16,7 @@ const styles = {
 var SignUp = React.createClass({
     showLock: function () {
         this.props.lock.showSignup({
-            callbackURL: this.props.site_domain+'/app/book',
+            callbackURL: this.props.site_domain+'/app/loading',
             responseType: 'token',
             authParams: {
                 scope: 'openid nickname email app_metadata'

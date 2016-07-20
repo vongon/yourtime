@@ -16,7 +16,7 @@ const styles = {
 var Login = React.createClass({
     showLogin: function () {
         this.props.lock.show({
-            callbackURL: this.props.site_domain+'/app/dashboard',
+            callbackURL: this.props.site_domain+'/app/loading',
             responseType: 'token',
             authParams: {
                 scope: 'openid nickname email app_metadata'

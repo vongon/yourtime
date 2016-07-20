@@ -1,6 +1,5 @@
 import * as ActionTypes from '../constants/constants';
 import Config from '../../../server/config';
-import { formSetState } from './serviceform.actions';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
@@ -47,6 +46,7 @@ export function authSetSnackbarMessage(message){
 
 export function authGetUser(lock) {
     var tokenFromHash = false;
+
     function getIdToken() {
         var idToken = localStorage.getItem('userToken');
         var authHash = lock.parseHash(window.location.hash);
