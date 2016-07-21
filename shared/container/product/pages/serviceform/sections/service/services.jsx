@@ -9,7 +9,8 @@ const styles = {
         textAlign: 'center'
     },
     button: {
-        marginTop: 20
+        marginTop: 20,
+        marginRight: 10
     }
 };
 
@@ -43,7 +44,7 @@ var Services = React.createClass({
                     <div className="col-sm-12" style={styles.col}>
                         <RaisedButton
                             style={styles.button}
-                            label="+ Add Service"
+                            label="+ Add More Services"
                             secondary={true}
                             onTouchTap={this.onAddService}
                             disabled={disableAddButton}

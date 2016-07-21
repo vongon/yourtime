@@ -44,6 +44,7 @@ var SelectVehicle = React.createClass({
                 <div className="col-sm-12"><Paper style={styles.paper}><LoadingSpinner/></Paper></div>
             </div>);
         }
+        if(this.props.availableVehicles.length === 0) this.props.setShowCreateView(true);
         return (
             <div className="row">
                 <div className="col-sm-12">

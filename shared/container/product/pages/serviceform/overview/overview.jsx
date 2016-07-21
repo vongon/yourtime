@@ -46,7 +46,7 @@ var Overview = React.createClass({
             var service = services[i];
             total += service.price;
         }
-        return total;
+        return Math.round(total * 100) / 100;
     },
     showLock: function(){
         var self = this;

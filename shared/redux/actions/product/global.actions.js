@@ -22,6 +22,11 @@ export function resetServiceForm() {
         dispatch(setDate(null));
         dispatch(setSubmitSuccess(false));
         dispatch(resetCreateVehicleForm());
-        dispatch(setAvailableVehicles([]));
+        
+        var availableVehicles = getState().product.serviceform.ui.selectvehicle.availableVehicles;
+        var filteredVehicles = availableVehicles.filter((vehicle)=>{
+            return vehicle._id !== 'new';
+        });
+        dispatch(setAvailableVehicles(filteredVehicles));
     }
 }

@@ -88,11 +88,13 @@ var CreateVehicle = React.createClass({
                         className="col-sm-12"
                         style={styles.buttonsCol}
                     >
-                        <RaisedButton
-                            style={styles.buttons}
-                            label="Close"
-                            onTouchTap={this.props.closeCreateView}
-                        />
+                        {this.props.availableVehicles.length > 0 ?
+                            <RaisedButton
+                                style={styles.buttons}
+                                label="Close"
+                                onTouchTap={this.props.closeCreateView}
+                            /> : ''
+                        }
                         <RaisedButton
                             icon={<AddIcon/>}
                             style={styles.buttons}
@@ -129,6 +131,7 @@ function mapStateToProps(state, ownProps) {
         visible: ownProps.visible,
         availableMakes: state.product.serviceform.ui.selectvehicle.availableMakes || [],
         tabValue : state.product.serviceform.ui.selectvehicle.tab_value || 'make',
+        availableVehicles: state.product.serviceform.ui.selectvehicle.availableVehicles || [],
 
         selectedMake: state.product.serviceform.ui.selectvehicle.make,
         selectedModel: state.product.serviceform.ui.selectvehicle.model,

@@ -87,6 +87,27 @@ var ServiceTabs = React.createClass({
         var oilChangeAvatar = <Avatar icon={<OilIcon />} backgroundColor={indigo500}/>;
         var tireRotationAvatar = <Avatar icon={<TireIcon />} backgroundColor={blue500}/>;
         var inspectionAvatar = <Avatar icon={<InspectionIcon />} backgroundColor={cyan500}/>;
+        if(this.props.serviceId){
+            return (
+                <div>
+                    {this.props.availableServices.map((service)=> {
+                        if (service._id !== this.props.serviceId) return null;
+                        var avatar;
+                        if (service.category === 'oil change') avatar = oilChangeAvatar;
+                        if (service.category === 'tire rotation') avatar = tireRotationAvatar;
+                        if (service.category === 'inspection') avatar = inspectionAvatar;
+                        return <ListItem
+                            disabled={true}
+                            leftAvatar={avatar}
+                            key={service._id}
+                            primaryText={<div><span>{service.name}</span> - <span style={{fontWeight:200}}>${service.price}</span></div>}
+                            secondaryText={service.description}
+                            onTouchTap={()=>{this.onServiceSelect(service)}}
+                        />
+                    })}
+                </div>
+            );
+        }
         return (
             <div>
                 <Tabs
@@ -152,6 +173,7 @@ var ServiceTabs = React.createClass({
                         <List>
                             {this.props.availableServices.map((service)=> {
                                 if (service.category !== this.state.selectedCategory) return null;
+                                if (this.props.selectedServices.indexOf(service._id) > -1) return null;
                                 var avatar;
                                 if (service.category === 'oil change') avatar = oilChangeAvatar;
                                 if (service.category === 'tire rotation') avatar = tireRotationAvatar;
@@ -183,11 +205,14 @@ var ServiceTabs = React.createClass({
 Tabs.propTypes = {
     serviceId: React.PropTypes.string.isRequired, //selected service id, could be '' if not yet selected
     availableServices: React.PropTypes.array.isRequired, //filtered for currently selected workplace
-    setServiceId: React.PropTypes.string.isRequired //setServiceId(id)
+    setServiceId: React.PropTypes.string.isRequired, //setServiceId(id)
+    selectedServices: React.PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
-    return {}
+    return {
+        selectedServices: state.product.serviceform.body.services || []
+    }
 }
 
 function mapDispatchToProps(dispatch) {
