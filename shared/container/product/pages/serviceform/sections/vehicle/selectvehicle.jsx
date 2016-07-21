@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import LoadingSpinner from '../../../../../../components/product/loadingspinner';
+import {setVehicleName} from '../../../../../../redux/actions/product/serviceform/overview.actions';
 import {getAvailableVehicles, setVehicleId, setShowCreateView} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
 import CreateVehicle from './createvehicle';
 import CheckCircle from 'material-ui/svg-icons/action/check-circle';
@@ -106,6 +107,7 @@ function mapDispatchToProps(dispatch) {
         },
         setVehicleId: (id)=> {
             dispatch(setVehicleId(id));
+            dispatch(setVehicleName(null));
         },
         setShowCreateView: (bool)=>{
             dispatch(setVehicleId(null));

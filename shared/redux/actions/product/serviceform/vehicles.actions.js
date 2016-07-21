@@ -111,12 +111,19 @@ export function setNewVehicle(obj){
 export function getAvailableVehicles() {
     return (dispatch, getState) => {
         var appState = getState();
-        if(!appState.auth.token) return dispatch(setAvailableVehicles([]));
-
         dispatch(setLoading(true));
+
+        //persist new vehicle if exists
+        var availableVehicles = appState.product.serviceform.ui.selectvehicle.availableVehicles || [];
+        var newVehicle = null;
+        for(var i=0; i<availableVehicles.length; i++){
+            var vehicle = availableVehicles[i];
+            if(vehicle._id === 'new') newVehicle = vehicle;
+        }
 
         async.parallel({
             availableVehicles: (pCb)=>{
+                if(!appState.auth.token) return pCb(null, []);
                 request
                     .get('/api/vehicles')
                     .set('authorization', 'Bearer '+ appState.auth.token)
@@ -144,6 +151,7 @@ export function getAvailableVehicles() {
                 dispatch(setLoading(false));
                 return;
             }
+            if(newVehicle) results.availableVehicles.push(newVehicle);
             dispatch(setAvailableVehicles(results.availableVehicles));
             dispatch(setAvailableMakes(results.availableMakes));
             dispatch(setLoading(false));
@@ -198,17 +206,45 @@ export function resetCreateVehicleForm(){
     }
 }
 
-export function postNewVehicle() {
+export function addNewVehicle(){
     return (dispatch, getState) => {
-        var appState=getState();
-        var style_obj = appState.product.serviceform.ui.selectvehicle.newVehicle;
+        var appState = getState();
+        var edmundVehicle = appState.product.serviceform.ui.selectvehicle.newVehicle;
+        var availableVehicles = appState.product.serviceform.ui.selectvehicle.availableVehicles;
+
+        /*filter out any vehicle with 'new' _id, if user creates multiple new vehicles*/
+        availableVehicles = availableVehicles.filter((vehicle)=>{
+            return vehicle._id !== 'new'
+        });
+
+        /*convert obj type*/
+        var yourtimeVehicle = createYourtimeVehicleObject(edmundVehicle);
+
+        /*add my new vehicle with _id 'new'*/
+        yourtimeVehicle._id = 'new';
+        availableVehicles = [...availableVehicles, yourtimeVehicle];
+
+        dispatch(setAvailableVehicles(availableVehicles));
+        dispatch(setVehicleId(yourtimeVehicle._id));
+        dispatch(setShowCreateView(false));
+    }
+}
+
+export function createYourtimeVehicleObject(style_obj){
+    return  {
+        edmunds_id: style_obj.id,
+        name: style_obj.make.name + ' ' + style_obj.model.name + ' ' + style_obj.year.year + ' ' + style_obj.trim
+    };
+}
+
+export function postNewVehicle(vehicle_obj) {
+    return (dispatch, getState) => {
+        var appState = getState();
         dispatch(setLoading(true));
         request
             .post('/api/vehicles')
             .set('authorization', 'Bearer '+ appState.auth.token)
-            .send({
-                edmunds_id: style_obj.id,
-                name: style_obj.make.name + ' ' + style_obj.model.name + ' ' + style_obj.year.year + ' ' + style_obj.trim})
+            .send(vehicle_obj)
             .end((err, res)=>{
                 if(err){
                     console.warn("Error when creating vehicle", err.body);

@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {setShowCreateView, setTabValue, postNewVehicle} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
+import {setShowCreateView, setTabValue, postNewVehicle, addNewVehicle} from '../../../../../../redux/actions/product/serviceform/vehicles.actions';
 import MakesTab from './tabs/makes';
 import ModelsTab from './tabs/models';
 import YearsTab from './tabs/years';
@@ -99,7 +99,7 @@ var CreateVehicle = React.createClass({
                             label="Add Vehicle"
                             disabled={this.props.newVehicle ? false : true}
                             primary={true}
-                            onTouchTap={this.props.postNewVehicle}
+                            onTouchTap={this.props.addNewVehicle}
                         />
                     </div>
                 </div>
@@ -119,7 +119,9 @@ CreateVehicle.propTypes = {
 
     newVehicle: React.PropTypes.object,
 
-    closeCreateView: React.PropTypes.func.isRequired
+    closeCreateView: React.PropTypes.func.isRequired,
+    setTabValue: React.PropTypes.func.isRequired,
+    addNewVehicle: React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -145,10 +147,9 @@ function mapDispatchToProps(dispatch) {
         setTabValue: (tab_value)=>{
             dispatch(setTabValue(tab_value));
         },
-        postNewVehicle: ()=>{
-            dispatch(postNewVehicle());
+        addNewVehicle:()=>{
+            dispatch(addNewVehicle());
         }
-
     }
 }
 

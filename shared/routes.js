@@ -75,8 +75,8 @@ var getRoutes = function(store){
                 <Route path="loading" component={ProductLoading}/>
                 <Route path="login" component={ProductLogin}/>
                 <Route path="signup" component={ProductSignup}/>
-                <Route path="book" component={ServiceFormIndex} onEnter={requireUserAuth}/>
-                <Route path="overview" component={OverviewIndex} onEnter={requireUserAuth}/>
+                <Route path="book" component={ServiceFormIndex}/>
+                <Route path="overview" component={OverviewIndex}/>
                 <Route path="user" component={User} onEnter={requireUserAuth}/>
                 <Route path="dashboard" component={Dashboard} onEnter={requireUserAuth}/>
             </Route>

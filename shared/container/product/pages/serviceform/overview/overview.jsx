@@ -10,6 +10,8 @@ import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import LoadingSpinner from '../../../../../components/product/loadingspinner';
 import {Link} from 'react-router';
 import { getData, setDiscountCode, submitServiceformBody } from '../../../../../redux/actions/product/serviceform/overview.actions';
+import { setSnackbarMessage } from '../../../../../redux/actions/product/global.actions'
+import { authGetUser } from '../../../../../redux/actions/auth.actions';
 import SubmitSuccess from './submitsuccess';
 import moment from 'moment';
 
@@ -45,6 +47,21 @@ var Overview = React.createClass({
             total += service.price;
         }
         return total;
+    },
+    showLock: function(){
+        var self = this;
+        this.props.lock.show({
+            authParams: {
+                scope: 'openid nickname email app_metadata'
+            }
+        }, function onLogin(err, profile, id_token) {
+            if (err) {
+                self.props.setSnackbarMessage('error logging in');
+                return;
+            }
+            localStorage.setItem('userToken', id_token);
+            self.props.authGetUser(self.props.lock);
+        });
     },
     render: function () {
         if (this.props.isLoading) {
@@ -195,14 +212,24 @@ var Overview = React.createClass({
                                     icon={<BackIcon/>}
                                 />
                             </Link>
-                            <RaisedButton
-                                style={styles.button}
-                                primary={true}
-                                label={this.props.submitIsLoading ? "Submitting...":"Order & Pay"}
-                                icon={this.props.submitIsLoading ? null : <DoneIcon/>}
-                                onTouchTap={this.props.submit}
-                                disabled={this.props.submitIsLoading}
-                            />
+                            {this.props.user === null ?
+                                <RaisedButton
+                                    style={styles.button}
+                                    primary={true}
+                                    label={'Sign Up To Complete Order'}
+                                    icon={<DoneIcon/>}
+                                    onTouchTap={this.showLock}
+                                /> :
+                                <RaisedButton
+                                    style={styles.button}
+                                    primary={true}
+                                    label={this.props.submitIsLoading ? "Submitting...":"Order & Pay"}
+                                    icon={this.props.submitIsLoading ? null : <DoneIcon/>}
+                                    onTouchTap={this.props.submit}
+                                    disabled={this.props.submitIsLoading}
+                                />
+                            }
+
                         </div>
                     </Paper>
                     <Divider style={{marginTop:20, marginBottom:20}}/>
@@ -222,10 +249,13 @@ Overview.propTypes = {
     date: React.PropTypes.string,
     services_objects: React.PropTypes.array.isRequired,
     discount_code: React.PropTypes.string.isRequired,
+    user: React.PropTypes.object,
 
     getData: React.PropTypes.func.isRequired,
     setDiscountCode: React.PropTypes.func.isRequired,
-    submit: React.PropTypes.func.isRequired
+    submit: React.PropTypes.func.isRequired,
+    setSnackbarMessage: React.PropTypes.func.isRequired,
+    authGetUser: React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -238,7 +268,8 @@ function mapStateToProps(state, ownProps) {
         vehicle_name: state.product.serviceform.ui.overview.vehicle_name || null,
         date: state.product.serviceform.ui.overview.date || null,
         services_objects: state.product.serviceform.ui.overview.services_objects || [],
-        discount_code: state.product.serviceform.ui.overview.discount_code || ''
+        discount_code: state.product.serviceform.ui.overview.discount_code || '',
+        user: state.auth.user || null
     }
 }
 
@@ -252,6 +283,12 @@ function mapDispatchToProps(dispatch) {
         },
         submit: ()=>{
             dispatch(submitServiceformBody());
+        },
+        setSnackbarMessage: (message)=>{
+            dispatch(setSnackbarMessage(message));
+        },
+        authGetUser: (lock)=>{
+            dispatch(authGetUser(lock));
         }
     }
 }

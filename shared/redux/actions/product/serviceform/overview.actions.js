@@ -74,6 +74,7 @@ export function asyncGetEventData(event, done){
                 });
         },
         vehicle_name: (pCb)=>{
+            if(event.vehicle_name) return pCb(null, event.vehicle_name);
             request
                 .get('/api/vehicles/'+event.vehicle_id)
                 .end((err,res)=>{
@@ -107,9 +108,9 @@ export function asyncGetEventData(event, done){
         if(err){
             return done(err);
         }
-        event.vehicle_name = results.vehicle_name;
-        event.workplace_name = results.workplace_name;
-        event.services_objects = results.services_objects;
+        event = {...event, vehicle_name: results.vehicle_name};
+        event = {...event, workplace_name: results.workplace_name};
+        event = {...event, services_objects : results.services_objects};
         done(null, event);
     });
 }
@@ -119,6 +120,23 @@ export function getData() {
         dispatch(setLoading(true));
         var appState = getState();
         var event = appState.product.serviceform.body;
+
+
+        if(event.vehicle_id === 'new'){
+            var availableVehicles = appState.product.serviceform.ui.selectvehicle.availableVehicles || [];
+            var vehicle_name = null;
+            for(var i=0; i<availableVehicles.length; i++){
+                var vehicle = availableVehicles[i];
+                if(vehicle._id === 'new'){
+                    vehicle_name = vehicle.name;
+                }
+            }
+            if(vehicle_name !== null) {
+                event = {...event, vehicle_name : vehicle_name};
+            } else {
+                event = {...event, vehicle_name : 'not found'};
+            }
+        }
 
         asyncGetEventData(event,(err, event)=>{
             if(err){
@@ -137,21 +155,70 @@ export function getData() {
 
 export function submitServiceformBody() {
     return (dispatch, getState) => {
-        dispatch(setSubmitLoading(true));
         var appState = getState();
+        if(!appState.auth.token) return dispatch(setSnackbarMessage('need to be logged in'));
+
+        dispatch(setSubmitLoading(true));
         var eventBody = appState.product.serviceform.body;
-        request
-            .post('/api/events/')
-            .set('authorization', 'Bearer '+ appState.auth.token)
-            .send(eventBody)
-            .end((err, res)=>{
-                if(err){
-                    dispatch(setSnackbarMessage('error: '+err.body));
-                    dispatch(setSubmitLoading(false));
-                    return;
-                }
+        if(eventBody.vehicle_id === 'new'){
+            //post vehicle object first, then post event
+            var availableVehicles = appState.product.serviceform.ui.selectvehicle.availableVehicles || [];
+            var vehicleToPost = null;
+            for(var i=0; i<availableVehicles.length; i++){
+                var vehicle = availableVehicles[i];
+                if(vehicle._id === 'new') vehicleToPost = vehicle;
+            }
+            if(vehicleToPost === null){
+                dispatch(setSnackbarMessage('error: invalid vehicle'));
                 dispatch(setSubmitLoading(false));
-                dispatch(setSubmitSuccess(true));
-            });
+                return;
+            }
+            request
+                .post('/api/vehicles/')
+                .set('authorization', 'Bearer '+ appState.auth.token)
+                .send(vehicleToPost)
+                .end((err, res)=>{
+                    if(err){
+                        dispatch(setSnackbarMessage('error: '+err.body));
+                        dispatch(setSubmitLoading(false));
+                        return;
+                    }
+                    var vehicle = res.body;
+                    eventBody = {...eventBody, vehicle_id: vehicle._id};
+                    request
+                        .post('/api/events/')
+                        .set('authorization', 'Bearer '+ appState.auth.token)
+                        .send(eventBody)
+                        .end((err, res)=>{
+                            if(err){
+                                dispatch(setSnackbarMessage('error: '+err.body));
+                                dispatch(setSubmitLoading(false));
+                                return;
+                            }
+                            dispatch(setSubmitLoading(false));
+                            dispatch(setSubmitSuccess(true));
+                        });
+                });
+
+
+
+        } else {
+            //post event as normal
+            request
+                .post('/api/events/')
+                .set('authorization', 'Bearer '+ appState.auth.token)
+                .send(eventBody)
+                .end((err, res)=>{
+                    if(err){
+                        dispatch(setSnackbarMessage('error: '+err.body));
+                        dispatch(setSubmitLoading(false));
+                        return;
+                    }
+                    dispatch(setSubmitLoading(false));
+                    dispatch(setSubmitSuccess(true));
+                });
+        }
+
+
     }
 }
