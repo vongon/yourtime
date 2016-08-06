@@ -23,7 +23,17 @@ const ServiceFormBodyReducer =  (state = initialBodyState, action) => {
             return {
                 ...state,
                 date: action.date
-            }
+            };
+        case ActionTypes.PRODUCT_OVERVIEW_SET_STRIPE_CUSTOMER_ID:
+            return {
+                ...state,
+                customer_id: action.customer_id
+            };
+        case ActionTypes.PRODUCT_OVERVIEW_SET_TOTAL_PRICE:
+            return {
+                ...state,
+                total_price: action.total_price
+            };
         default:
             return state;
     }

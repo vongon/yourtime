@@ -112,6 +112,11 @@ app.use((req, res, next) => {
             auth0_domain: process.env.AUTH0_DOMAIN,
             auth0_client: process.env.AUTH0_CLIENT,
             site_domain: process.env.SITE_DOMAIN
+        },
+        product: {
+            global: {
+                stripe_publishable_key: process.env.STRIPE_PUBLISHABLE_KEY || 'testing'
+            }
         }
     };
 

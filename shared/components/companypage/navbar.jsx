@@ -1,21 +1,21 @@
 import React from 'react';
 import $ from 'jquery';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 
 var NavBar = React.createClass({
     componentDidMount: function () {
         // Closes the Responsive Menu on Menu Item Click
-        $('.navbar-collapse ul li a').click(function() {
+        $('.navbar-collapse ul li a').click(function () {
             $('.navbar-toggle:visible').click();
         });
 
         //window.addEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
     },
-    componentWillUnmount: function(){
+    componentWillUnmount: function () {
         //window.removeEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
     },
-    scrollListener: function(){
-        var checkScrolling = function() {
+    scrollListener: function () {
+        var checkScrolling = function () {
             var offset = 50;
             var servicesPos = $('#services').offset().top - offset;
             var howitworksPos = $('#howitworks').offset().top - offset;
@@ -62,7 +62,8 @@ var NavBar = React.createClass({
                             <li><a className="page-scroll" href="#services">Services</a></li>
                             <li><a className="page-scroll" href="#howitworks">How It Works</a></li>
                             <li><a className="page-scroll" href="#contact">Contact</a></li>
-                            <li><Link className="btn btn-primary btn-menu-booknow" to={this.props.appPath}>Book Now!</Link></li>
+                            <li><a className="btn btn-primary btn-menu-booknow" href="#" onClick={this.props.openComingSoonModal}>Book Now!</a></li>
+                            {/*<li><Link className="btn btn-primary btn-menu-booknow" to={this.props.appPath}>Book Now!</Link></li>*/}
                         </ul>
                     </div>
                 </div>

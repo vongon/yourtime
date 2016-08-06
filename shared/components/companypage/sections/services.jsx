@@ -12,33 +12,72 @@ var ServicesSection = React.createClass({
                     </div>
                 </div>
                 <div className="row text-center">
-                    <div className="col-md-4">
+                    <div className="col-sm-4">
+                    {/*----------------------------------------------------------------*/}
                     <span className="fa-stack fa-4x">
                         <i className="fa fa-circle fa-stack-2x text-primary"></i>
                         <i className="fa fa-car fa-stack-1x fa-inverse"></i>
                     </span>
-                        <h4 className="service-heading">Oil Changes</h4>
-                        <p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
-                            a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>
+                        <h4 className="service-heading">Car Wash</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                            a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
                     </div>
-                    <div className="col-md-4">
+                    {/*----------------------------------------------------------------*/}
+
+                    <div className="col-sm-4">
                     <span className="fa-stack fa-4x">
                         <i className="fa fa-circle fa-stack-2x text-primary"></i>
                         <i className="fa fa-cog fa-stack-1x fa-inverse"></i>
                     </span>
-                        <h4 className="service-heading">Tire Rotations</h4>
-                        <p className="text-muted">Keep your treads trackin'! Our <a href="#">auto shop</a> guarantees
-                            a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future</p>
+                        <h4 className="service-heading">Oil Change</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                         a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
                     </div>
-                    <div className="col-md-4">
+                    {/*----------------------------------------------------------------*/}
+
+                    <div className="col-sm-4">
                     <span className="fa-stack fa-4x">
                         <i className="fa fa-circle fa-stack-2x text-primary"></i>
                         <i className="fa fa-search fa-stack-1x fa-inverse"></i>
                     </span>
-                        <h4 className="service-heading">State Inspections</h4>
-                        <p className="text-muted">Keep your inspections inspected! Our <a href="#">auto shop</a> guarantees
-                            a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future</p>
+                        <h4 className="service-heading">Routine Flush</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                         a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
                     </div>
+                    {/*----------------------------------------------------------------*/}
+
+                    <div className="col-sm-4">
+                    <span className="fa-stack fa-4x">
+                        <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i className="fa fa-search fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h4 className="service-heading">Texas State Inspections</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                         a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
+                    </div>
+                    {/*----------------------------------------------------------------*/}
+
+                    <div className="col-sm-4">
+                    <span className="fa-stack fa-4x">
+                        <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i className="fa fa-search fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h4 className="service-heading">Tire Rotation</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                         a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
+                    </div>
+                    {/*----------------------------------------------------------------*/}
+
+                    <div className="col-sm-4">
+                    <span className="fa-stack fa-4x">
+                        <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i className="fa fa-search fa-stack-1x fa-inverse"></i>
+                    </span>
+                        <h4 className="service-heading">Tune Ups</h4>
+                        {/*<p className="text-muted">Keep your car lubed! Our <a href="#">auto shop</a> guarantees
+                         a high quality job, plus you will get a full report on vehicle health recommended maintenance for the future.</p>*/}
+                    </div>
+                    {/*----------------------------------------------------------------*/}
                 </div>
             </div>
         </section>

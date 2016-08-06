@@ -8,18 +8,25 @@ import FAQSection from './sections/faq';
 import AboutSection from './sections/about';
 import ContactSection from './sections/contact';
 import Footer from './footer';
+import ComingSoonRibbon from './comingsoonribbon';
+import ModalComingSoon from './modalcomingsoon';
 
 var Index = React.createClass({
-    componentDidMount: function(){
-        var findScrollPos = function(selectorStr){
+    getInitialState: function () {
+        return {
+            modalOpen: false
+        }
+    },
+    componentDidMount: function () {
+        var findScrollPos = function (selectorStr) {
             var selector = $(selectorStr);
             var offset = selector.offset();
             var navbarHeight = 50; //height of .navbar-shrink
             return offset.top - navbarHeight;
         };
 
-        $(function() {
-            $('a.page-scroll').bind('click', function(event) {
+        $(function () {
+            $('a.page-scroll').bind('click', function (event) {
                 var $anchor = $(this);
                 $('html, body').stop().animate({
                     scrollTop: findScrollPos($anchor.attr('href'))
@@ -29,34 +36,34 @@ var Index = React.createClass({
         });
 
         // Closes the Responsive Menu on Menu Item Click
-        $('.navbar-collapse ul li a').click(function() {
+        $('.navbar-collapse ul li a').click(function () {
             $('.navbar-toggle:visible').click();
         });
 
         this.scrollWatcher();
     },
-    scrollWatcher: function(){
+    scrollWatcher: function () {
         var docElem = document.documentElement,
-            header = document.querySelector( '.navbar-default' ),
+            header = document.querySelector('.navbar-default'),
             didScroll = false,
             changeHeaderOn = 150; //pixel value to change header
 
         function init() {
-            window.addEventListener( 'scroll', function( event ) {
-                if( !didScroll ) {
+            window.addEventListener('scroll', function (event) {
+                if (!didScroll) {
                     didScroll = true;
-                    setTimeout( scrollPage, 250 );
+                    setTimeout(scrollPage, 250);
                 }
-            }, false );
+            }, false);
         }
 
         function scrollPage() {
             var sy = scrollY();
-            if ( sy >= changeHeaderOn ) {
-                classie.add( header, 'navbar-shrink' );
+            if (sy >= changeHeaderOn) {
+                classie.add(header, 'navbar-shrink');
             }
             else {
-                classie.remove( header, 'navbar-shrink' );
+                classie.remove(header, 'navbar-shrink');
             }
             didScroll = false;
         }
@@ -67,7 +74,12 @@ var Index = React.createClass({
 
         init();
     },
-    render: function(){
+    openComingSoonModal: function () {
+        this.setState({
+            modalOpen: true
+        });
+    },
+    render: function () {
         var appPath = "/app/book";
         return (
             <div id="page-top">
@@ -94,17 +106,22 @@ var Index = React.createClass({
                 {"href":"https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700","rel":"stylesheet","type":"text/css"}
                 ]}
                 />
-                <NavBar appPath = {appPath}/>
-                <Header appPath = {appPath}/>
+                <ModalComingSoon
+                    open={this.state.modalOpen}
+                    onRequestClose={()=>{ this.setState({modalOpen: false}) }}
+                />
+                <ComingSoonRibbon/>
+                <NavBar appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
+                <Header appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
                 <ServicesSection />
-                <HowItWorksSection appPath = {appPath}/>
+                <HowItWorksSection appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
                 <FAQSection />
-                <AboutSection />
+                {/*<AboutSection />*/}
                 <ContactSection />
                 <Footer />
             </div>
         );
     }
-});
+                });
 
-export default Index;
+                export default Index;

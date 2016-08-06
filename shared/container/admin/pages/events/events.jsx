@@ -25,15 +25,6 @@ var EventsPage = React.createClass({
             <div>
                 <h2 className="dashboard-title">Events</h2>
                 <Divider style={{marginTop: 20, marginBottom:20}}/>
-                {/*<button
-                    className="btn btn-primary"
-                    style={{marginBottom:20}}
-                    onClick={()=>{
-                        this.setState({openCreateModal: true});
-                        }
-                    }>
-                    + Add Event
-                </button>*/}
                 <Paper>
                     <div className="container-fluid table-responsive">
                         <table className="table table-hover">

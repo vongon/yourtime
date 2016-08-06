@@ -21,13 +21,10 @@ var HowItWorksSection = React.createClass({
                                 </div>
                                 <div className="timeline-panel">
                                     <div className="timeline-heading">
-                                        <h4>1. Drop your car off</h4>
+                                        <h4>1. Drive to work (Sorry, can't get you out of this part!)</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur
-                                            adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis
-                                            temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea
-                                            quo dolore laudantium consectetur!</p>
+                                        <p className="text-muted">You drive to work like normal and leave you keys with us.</p>
                                     </div>
                                 </div>
                             </li>
@@ -37,13 +34,10 @@ var HowItWorksSection = React.createClass({
                                 </div>
                                 <div className="timeline-panel">
                                     <div className="timeline-heading">
-                                        <h4>2. We take care of the work</h4>
+                                        <h4>2. We take care of your auto service requests</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur
-                                            adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis
-                                            temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea
-                                            quo dolore laudantium consectetur!</p>
+                                        <p className="text-muted">While you work we take care of the services requested by using one of our trusted vendors.</p>
                                     </div>
                                 </div>
                             </li>
@@ -53,24 +47,30 @@ var HowItWorksSection = React.createClass({
                                 </div>
                                 <div className="timeline-panel">
                                     <div className="timeline-heading">
-                                        <h4>3. You pick your car up</h4>
+                                        <h4>3. Enjoy the time saved!</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur
-                                            adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis
-                                            temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea
-                                            quo dolore laudantium consectetur!</p>
+                                        <p className="text-muted">Clock out, grab your keys, and enjoy your evening!</p>
                                     </div>
                                 </div>
                             </li>
                             <li className="timeline-inverted">
-                                <Link to={this.props.appPath} alt="book a service now">
+                                <a onClick={this.props.openComingSoonModal}
+                                   style={{cursor:'pointer'}}
+                                    alt="book a service now">
+                                    <div className="timeline-image">
+                                        <h4>Book A
+                                            <br />Service
+                                            <br />Now!</h4>
+                                    </div>
+                                </a>
+                                {/*<Link to={this.props.appPath} alt="book a service now">
                                     <div className="timeline-image">
                                         <h4>Book A
                                         <br />Service
                                         <br />Now!</h4>
                                     </div>
-                                </Link>
+                                </Link>*/}
                             </li>
                         </ul>
                     </div>

@@ -5,6 +5,7 @@ import vehicles from './vehicles.routes';
 import services from './services.routes';
 import events from './events.routes';
 import edmunds from './edmunds.routes';
+import customers from './customers.routes';
 
 var api_routes =  function(app){
     app.use('/api', locations);
@@ -14,6 +15,7 @@ var api_routes =  function(app){
     app.use('/api', services);
     app.use('/api', events);
     app.use('/api', edmunds);
+    app.use('/api', customers);
 };
 
 export default api_routes;

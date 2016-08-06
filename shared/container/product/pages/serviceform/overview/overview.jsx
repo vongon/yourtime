@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import StripeCheckout from 'react-stripe-checkout';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
@@ -9,9 +10,14 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import LoadingSpinner from '../../../../../components/product/loadingspinner';
 import {Link} from 'react-router';
-import { getData, setDiscountCode, submitServiceformBody } from '../../../../../redux/actions/product/serviceform/overview.actions';
-import { setSnackbarMessage } from '../../../../../redux/actions/product/global.actions'
-import { authGetUser } from '../../../../../redux/actions/auth.actions';
+import {
+    getData,
+    setDiscountCode,
+    postStripeTokenAndSubmitEvent,
+    setTotalPrice
+} from '../../../../../redux/actions/product/serviceform/overview.actions';
+import {setSnackbarMessage} from '../../../../../redux/actions/product/global.actions'
+import {authGetUser} from '../../../../../redux/actions/auth.actions';
 import SubmitSuccess from './submitsuccess';
 import moment from 'moment';
 
@@ -36,19 +42,26 @@ const styles = {
 };
 
 var Overview = React.createClass({
-    componentDidMount: function(){
+    componentDidMount: function () {
         this.props.getData();
     },
-    getTotal: function(){
+    onStripeToken: function (stripe_token) {
+        console.log('onStripeToken() - token:', stripe_token);
+        var total_price = this.getTotal();
+        this.props.setTotalPrice( total_price );
+        this.props.postStripeTokenAndSubmitEvent(stripe_token.id);
+    },
+    getTotal: function () {
+        /*todo: get better price validation*/
         var services = this.props.services_objects;
         var total = 0;
-        for(var i=0; i<services.length; i++){
+        for (var i = 0; i < services.length; i++) {
             var service = services[i];
             total += service.price;
         }
         return Math.round(total * 100) / 100;
     },
-    showLock: function(){
+    showLock: function () {
         var self = this;
         this.props.lock.show({
             authParams: {
@@ -65,9 +78,11 @@ var Overview = React.createClass({
     },
     render: function () {
         if (this.props.isLoading) {
-            return (<div className="row"><div className="col-sm-12"><Paper style={styles.paper}><LoadingSpinner/></Paper></div></div>);
+            return (<div className="row">
+                <div className="col-sm-12"><Paper style={styles.paper}><LoadingSpinner/></Paper></div>
+            </div>);
         }
-        if (this.props.submitSuccess){
+        if (this.props.submitSuccess) {
             return (<SubmitSuccess/>)
         }
         return (
@@ -145,10 +160,10 @@ var Overview = React.createClass({
                                         </thead>
                                         <tbody>
                                         {this.props.services_objects.map(
-                                            (service)=>{
+                                            (service)=> {
                                                 return <tr key={service._id}>
                                                     <td style={styles.td}>{service.name}</td>
-                                                    <td style={styles.td}>{'$ '+service.price}</td>
+                                                    <td style={styles.td}>{'$ ' + service.price}</td>
                                                     <td style={styles.td}>
                                                         <Link to="/app/book">
                                                             <FlatButton
@@ -199,7 +214,7 @@ var Overview = React.createClass({
                                         </tr>
                                         <tr>
                                             <td style={styles.td}><h5>TOTAL:</h5></td>
-                                            <td style={styles.td}>{'$ '+this.getTotal()}</td>
+                                            <td style={styles.td}>{'$ ' + this.getTotal()}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -220,14 +235,20 @@ var Overview = React.createClass({
                                     icon={<DoneIcon/>}
                                     onTouchTap={this.showLock}
                                 /> :
-                                <RaisedButton
-                                    style={styles.button}
-                                    primary={true}
-                                    label={this.props.submitIsLoading ? "Submitting...":"Order & Pay"}
-                                    icon={this.props.submitIsLoading ? null : <DoneIcon/>}
-                                    onTouchTap={this.props.submit}
-                                    disabled={this.props.submitIsLoading}
-                                />
+                                <StripeCheckout
+                                    token={this.onStripeToken}
+                                    stripeKey={this.props.stripe_key}
+                                    amount={this.getTotal()*100}
+                                    email={this.props.user.email || ''}
+                                >
+                                    <RaisedButton
+                                        style={styles.button}
+                                        primary={true}
+                                        label={this.props.submitIsLoading ? "Submitting...":"Order & Pay"}
+                                        icon={this.props.submitIsLoading ? null : <DoneIcon/>}
+                                        disabled={this.props.submitIsLoading}
+                                    />
+                                </StripeCheckout>
                             }
 
                         </div>
@@ -250,10 +271,12 @@ Overview.propTypes = {
     services_objects: React.PropTypes.array.isRequired,
     discount_code: React.PropTypes.string.isRequired,
     user: React.PropTypes.object,
+    stripe_key: React.PropTypes.string.isRequired,
+
 
     getData: React.PropTypes.func.isRequired,
     setDiscountCode: React.PropTypes.func.isRequired,
-    submit: React.PropTypes.func.isRequired,
+    postStripeTokenAndSubmitEvent: React.PropTypes.func.isRequired,
     setSnackbarMessage: React.PropTypes.func.isRequired,
     authGetUser: React.PropTypes.func.isRequired
 };
@@ -269,26 +292,30 @@ function mapStateToProps(state, ownProps) {
         date: state.product.serviceform.ui.overview.date || null,
         services_objects: state.product.serviceform.ui.overview.services_objects || [],
         discount_code: state.product.serviceform.ui.overview.discount_code || '',
-        user: state.auth.user || null
+        user: state.auth.user || null,
+        stripe_key: state.product.global.stripe_publishable_key
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getData: ()=>{
+        getData: ()=> {
             dispatch(getData());
         },
-        setDiscountCode: (discount_code)=>{
+        setDiscountCode: (discount_code)=> {
             dispatch(setDiscountCode(discount_code));
         },
-        submit: ()=>{
-            dispatch(submitServiceformBody());
+        postStripeTokenAndSubmitEvent: (stripe_token)=>{
+            dispatch(postStripeTokenAndSubmitEvent(stripe_token));
         },
-        setSnackbarMessage: (message)=>{
+        setSnackbarMessage: (message)=> {
             dispatch(setSnackbarMessage(message));
         },
-        authGetUser: (lock)=>{
+        authGetUser: (lock)=> {
             dispatch(authGetUser(lock));
+        },
+        setTotalPrice: (total_price) => {
+            dispatch(setTotalPrice(total_price));
         }
     }
 }

@@ -6,7 +6,9 @@ var populateEvent = function(event, req, done){
     if(req.body.workplace_id) event.workplace_id = req.body.workplace_id;
     if(req.body.vehicle_id) event.vehicle_id = req.body.vehicle_id;
     if(req.body.date) event.date = req.body.date;
-    event.status = req.body.status || 'pending';
+    if(req.body.status) event.status = req.body.status;
+    if(req.body.customer_id) event.customer_id = req.body.customer_id;
+    if(req.body.total_price) event.total_price = req.body.total_price;
     if(req.body.services) {
         var count = 0;
         var errorDetected = false;
@@ -61,7 +63,7 @@ export function getEvents(req, res) {
  services: (required) [ Schema.Types.ObjectId ],
  date: (required) Date,
  status: (optional) enum ["pending","complete"], will default to "pending" if not provided
-
+ customer_id: (required) stripe customer id that has payment info
  */
 export function postEvents(req, res) {
     if (!req.body.workplace_id) return res.status(400).send({err: 'requires a workplace_id attribute in body to create event'});
@@ -74,6 +76,9 @@ export function postEvents(req, res) {
     if (!Array.isArray(req.body.services)) return res.status(400).send({err: 'requires a services to be an array'});
 
     if (!req.body.date) return res.status(400).send({err: 'requires a date attribute in body to create event'});
+    if (!req.body.customer_id) return res.status(400).send({err: 'requires a customer_id attribute in body to create event'});
+    if (!req.body.total_price) return res.status(400).send({err: 'requires a total_price attribute in body to create event'});
+    if (!req.body.status) req.body.status = 'pending'; //default value
 
     var event = new Event;
     populateEvent(event, req, function(err, event){

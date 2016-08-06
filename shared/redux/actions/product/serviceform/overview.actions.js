@@ -60,6 +60,43 @@ export function setDiscountCode(discount_code){
     };
 }
 
+export function setCustomerId(customer_id) {
+    return {
+        type: ActionTypes.PRODUCT_OVERVIEW_SET_STRIPE_CUSTOMER_ID,
+        customer_id: customer_id
+    };
+}
+
+export function setTotalPrice(total_price) {
+    return {
+        type: ActionTypes.PRODUCT_OVERVIEW_SET_TOTAL_PRICE,
+        total_price: total_price
+    }
+}
+
+export function postStripeTokenAndSubmitEvent(stripe_token){
+    return (dispatch, getState) => {
+        dispatch(setSubmitLoading(true));
+        var appState = getState();
+        request
+            .post('/api/customers/')
+            .set('authorization', 'Bearer '+ appState.auth.token)
+            .send({stripe_token: stripe_token})
+            .end((err, res)=>{
+                if(err){
+                    console.log('error submitting customer!');
+                    dispatch(setSnackbarMessage('error: '+err.body));
+                    dispatch(setSubmitLoading(false));
+                    return;
+                }
+                console.log('created or updated customer:', res.body);
+                var customer_id = res.body.customer_id;
+                dispatch(setCustomerId(customer_id));
+                dispatch(submitServiceformBody(customer_id));
+            });
+    }
+}
+
 export function asyncGetEventData(event, done){
     async.parallel({
         workplace_name: (pCb)=>{
@@ -153,13 +190,15 @@ export function getData() {
     }
 }
 
-export function submitServiceformBody() {
+export function submitServiceformBody(customer_id) {
     return (dispatch, getState) => {
         var appState = getState();
         if(!appState.auth.token) return dispatch(setSnackbarMessage('need to be logged in'));
 
         dispatch(setSubmitLoading(true));
         var eventBody = appState.product.serviceform.body;
+        if(customer_id) eventBody = {...eventBody, customer_id: customer_id}; //this is here just in case the appState didn't get updated in time when Stripe authorization completes
+
         if(eventBody.vehicle_id === 'new'){
             //post vehicle object first, then post event
             var availableVehicles = appState.product.serviceform.ui.selectvehicle.availableVehicles || [];
@@ -222,3 +261,6 @@ export function submitServiceformBody() {
 
     }
 }
+
+
+
