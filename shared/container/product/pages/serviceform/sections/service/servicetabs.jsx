@@ -12,6 +12,7 @@ import InspectionIcon from 'material-ui/svg-icons/communication/contact-mail';
 import ModalInfo from './modalinfo';
 
 
+
 const styles = {
     buttonsCol: {
         textAlign: 'center'
