@@ -21,10 +21,10 @@ var HowItWorksSection = React.createClass({
                                 </div>
                                 <div className="timeline-panel">
                                     <div className="timeline-heading">
-                                        <h4>1. Drive to work (Sorry, can't get you out of this part!)</h4>
+                                        <h4>1. Drive to work</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">You drive to work like normal and leave you keys with us.</p>
+                                        <p className="text-muted">Sorry, can't get you out of this part! You drive to work like normal and leave you keys with us.</p>
                                     </div>
                                 </div>
                             </li>

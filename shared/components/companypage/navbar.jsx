@@ -62,7 +62,7 @@ var NavBar = React.createClass({
                             <li><a className="page-scroll" href="#services">Services</a></li>
                             <li><a className="page-scroll" href="#howitworks">How It Works</a></li>
                             <li><a className="page-scroll" href="#contact">Contact</a></li>
-                            <li><a className="btn btn-primary btn-menu-booknow" href="#" onClick={this.props.openComingSoonModal}>Book Now!</a></li>
+                            <li><a className="btn btn-primary btn-menu-booknow" onClick={this.props.openComingSoonModal}>Book Now!</a></li>
                             {/*<li><Link className="btn btn-primary btn-menu-booknow" to={this.props.appPath}>Book Now!</Link></li>*/}
                         </ul>
                     </div>
