@@ -288,7 +288,7 @@ header .intro-text .intro-heading {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 55px;
-    /*line-height: 75px;*/
+    line-height: 55px;
     margin-bottom: 50px;
   }
 }
