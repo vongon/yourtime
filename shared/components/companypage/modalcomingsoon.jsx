@@ -28,7 +28,13 @@ var ModalComingSoon = React.createClass({
                 autoScrollBodyContent={true}
             >
                 <div className="container-fluid">
-                    <h3>YourTime services are coming very very soon! :)</h3>
+                    <div className="row">
+                        <div className="col-md-12 timeline-body">
+                            <h3 style={{fontWeight: 300, textTransform: 'none', fontSize: 20}}>YourTime services are coming soon! If you are interested in more
+                                information, please email us at <a target="_blank" href="mailto:info@yourtime.life">info@yourtime.life</a>
+                            </h3>
+                        </div>
+                    </div>
                 </div>
             </Dialog>
         );

@@ -151,6 +151,8 @@ fieldset[disabled] .btn-xl.active {
 .navbar-default .navbar-brand {
   color: #00D7FF;
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
+  font-size: 35px;
+  text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus,
@@ -224,7 +226,7 @@ fieldset[disabled] .btn-xl.active {
     border: none;
   }
   .navbar-default .navbar-brand {
-    font-size: 2em;
+    font-size: 50px;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
@@ -237,7 +239,7 @@ fieldset[disabled] .btn-xl.active {
     padding: 10px 0;
   }
   .navbar-default.navbar-shrink .navbar-brand {
-    font-size: 1.5em;
+    font-size: 40px;
   }
 }
 header {
@@ -255,26 +257,32 @@ header {
 header .intro-text {
   padding-top: 100px;
   padding-bottom: 50px;
+  padding-right: 0px;
 }
 header .intro-text .intro-lead-in {
   font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
   font-style: italic;
   font-size: 22px;
   line-height: 22px;
   margin-bottom: 25px;
 }
 header .intro-text .intro-heading {
+  text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
-  font-weight: 700;
-  font-size: 50px;
-  line-height: 50px;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 45px;
   margin-bottom: 30px;
 }
 @media (min-width: 768px) {
   header .intro-text {
+    max-width: 550px;
     padding-top: 300px;
     padding-bottom: 200px;
+    padding-left: 0px;
   }
   header .intro-text .intro-lead-in {
     font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -284,11 +292,10 @@ header .intro-text .intro-heading {
     margin-bottom: 25px;
   }
   header .intro-text .intro-heading {
-    font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
+    text-transform: none;
+    font-weight: 600;
     font-size: 55px;
-    line-height: 55px;
+    line-height: 65px;
     margin-bottom: 50px;
   }
 }

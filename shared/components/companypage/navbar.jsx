@@ -8,41 +8,10 @@ var NavBar = React.createClass({
         $('.navbar-collapse ul li a').click(function () {
             $('.navbar-toggle:visible').click();
         });
-
-        //window.addEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
-    },
-    componentWillUnmount: function () {
-        //window.removeEventListener("scroll", this.scrollListener);//disable b/c it looks weird on mobile
-    },
-    scrollListener: function () {
-        var checkScrolling = function () {
-            var offset = 50;
-            var servicesPos = $('#services').offset().top - offset;
-            var howitworksPos = $('#howitworks').offset().top - offset;
-            var faqPos = $('#faq').offset().top - offset;
-            var aboutPos = $('#about').offset().top - offset;
-            var contactPos = $('#contact').offset().top - offset;
-
-            var scrollPos = $(document).scrollTop();
-
-            if (scrollPos < servicesPos) {
-                $("a[href$='#services']").blur();
-                $("a[href$='#howitworks']").blur();
-                $("a[href$='#faq']").blur();
-                $("a[href$='#about']").blur();
-                $("a[href$='#contact']").blur();
-            }
-            else if (scrollPos >= servicesPos && scrollPos < howitworksPos) $("a[href$='#services']").focus();
-            else if (scrollPos >= howitworksPos && scrollPos < faqPos) $("a[href$='#howitworks']").focus();
-            else if (scrollPos >= faqPos && scrollPos < aboutPos) $("a[href$='#faq']").focus();
-            else if (scrollPos >= about && scrollPos < contactPos) $("a[href$='#about']").focus();
-            else if (scrollPos >= contactPos) $("a[href$='#contact']").focus();
-        }
-        setTimeout(checkScrolling, 250); //call on 250ms interval to reduce browser load
     },
     render: function () {
         return (
-            <nav className="navbar navbar-default navbar-fixed-top">
+            <nav className="navbar navbar-default navbar-fixed-top navbar-shrink">
                 <div className="container">
                     {/* Brand and toggle get grouped for better mobile display */}
                     <div className="navbar-header page-scroll">

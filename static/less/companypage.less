@@ -89,7 +89,9 @@ h1, h2, h3, h4, h5, h6 {
 	.navbar-brand {
 		color: @brand-primary;
 		.script-font;
-        &:hover,
+		font-size: 35px;
+		text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
+		&:hover,
         &:focus,
         &:active,
         &.active {
@@ -164,7 +166,7 @@ h1, h2, h3, h4, h5, h6 {
         transition: padding 0.3s;
         border: none;
 	    .navbar-brand {
-	        font-size: 2em;
+	        font-size: 50px;
 	        -webkit-transition: all 0.3s;
 	        -moz-transition: all 0.3s;
 	        transition: all 0.3s;
@@ -177,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
     	background-color: @gray-darkest;
         padding: 10px 0;
 		.navbar-brand {
-	        font-size: 1.5em;
+			font-size: 40px;
 	    }    
 	}
 }
@@ -193,18 +195,22 @@ header {
 	.intro-text {
 		padding-top: 100px;
 		padding-bottom: 50px;
+		padding-right: 0px;
 		.intro-lead-in {
 			.serif-font;
+			text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
 			font-style: italic;
 			font-size: 22px;
 			line-height: 22px;
 			margin-bottom: 25px;
 		}
 		.intro-heading {
+			text-shadow: -1px 2px 8px rgba(60, 60, 60, 0.66);
 			.heading-font;
-			font-weight: 700;
-			font-size: 50px;
-			line-height: 50px;
+			text-transform: none;
+			font-weight: 600;
+			font-size: 40px;
+			line-height: 45px;
 			margin-bottom: 30px;
 		}
 	}
@@ -213,8 +219,10 @@ header {
 @media(min-width:768px) {
 	header {
 		.intro-text {
+			max-width: 550px;
 			padding-top: 300px;
 			padding-bottom: 200px;
+			padding-left: 0px;
 			.intro-lead-in {
 				.serif-font;
 				font-style: italic;
@@ -223,10 +231,10 @@ header {
 				margin-bottom: 25px;
 			}
 			.intro-heading {
-				.heading-font;
-				font-weight: 700;
+				text-transform: none;
+				font-weight: 600;
 				font-size: 55px;
-				line-height: 55px;
+				line-height: 65px;
 				margin-bottom: 50px;
 			}
 		}
@@ -279,6 +287,7 @@ section {
         background-color: #f1f1f1;
         left: 40px;
         margin-left: -1.5px;
+		margin-bottom: 20px;
     }
     > li {
         margin-bottom: 50px;

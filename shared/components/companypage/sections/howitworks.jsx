@@ -9,7 +9,7 @@ var HowItWorksSection = React.createClass({
                 <div className="row">
                     <div className="col-lg-12 text-center">
                         <h2 className="section-heading">How It Works</h2>
-                        <h3 className="section-subheading text-muted">Here's the basic rundown!</h3>
+                        <h3 className="section-subheading text-muted">{/*Here's the basic rundown!*/}</h3>
                     </div>
                 </div>
                 <div className="row">
@@ -24,7 +24,7 @@ var HowItWorksSection = React.createClass({
                                         <h4>1. Drive to work</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">Sorry, can't get you out of this part! You drive to work like normal and leave you keys with us.</p>
+                                        <p className="text-muted">Sorry, can't get you out of this part! You drive to work like normal and leave your keys with us.</p>
                                     </div>
                                 </div>
                             </li>
@@ -34,10 +34,10 @@ var HowItWorksSection = React.createClass({
                                 </div>
                                 <div className="timeline-panel">
                                     <div className="timeline-heading">
-                                        <h4>2. We take care of your auto service requests</h4>
+                                        <h4>2. We get to work</h4>
                                     </div>
                                     <div className="timeline-body">
-                                        <p className="text-muted">While you work we take care of the services requested by using one of our trusted vendors.</p>
+                                        <p className="text-muted">While you work we take care of the services requested using one of our trusted vendors.</p>
                                     </div>
                                 </div>
                             </li>
@@ -54,7 +54,7 @@ var HowItWorksSection = React.createClass({
                                     </div>
                                 </div>
                             </li>
-                            <li className="timeline-inverted">
+                            {/*<li className="timeline-inverted">
                                 <a onClick={this.props.openComingSoonModal}
                                    style={{cursor:'pointer'}}
                                     alt="book a service now">
@@ -64,14 +64,7 @@ var HowItWorksSection = React.createClass({
                                             <br />Now!</h4>
                                     </div>
                                 </a>
-                                {/*<Link to={this.props.appPath} alt="book a service now">
-                                    <div className="timeline-image">
-                                        <h4>Book A
-                                        <br />Service
-                                        <br />Now!</h4>
-                                    </div>
-                                </Link>*/}
-                            </li>
+                            </li>*/}
                         </ul>
                     </div>
                 </div>

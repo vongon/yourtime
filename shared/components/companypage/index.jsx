@@ -40,7 +40,7 @@ var Index = React.createClass({
             $('.navbar-toggle:visible').click();
         });
 
-        this.scrollWatcher();
+        //this.scrollWatcher();
     },
     scrollWatcher: function () {
         var docElem = document.documentElement,
@@ -110,12 +110,12 @@ var Index = React.createClass({
                     open={this.state.modalOpen}
                     onRequestClose={()=>{ this.setState({modalOpen: false}) }}
                 />
-                <ComingSoonRibbon/>
+                {/*<ComingSoonRibbon/>*/}
                 <NavBar appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
                 <Header appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
                 <ServicesSection />
                 <HowItWorksSection appPath = {appPath} openComingSoonModal={this.openComingSoonModal}/>
-                <FAQSection />
+                {/*<FAQSection />*/}
                 {/*<AboutSection />*/}
                 <ContactSection />
                 <Footer />
